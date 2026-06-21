@@ -1,0 +1,70 @@
+/* ── Color Tokens ──────────────────────────────── */
+:root {
+  /* Primary (Blue) */
+  --color-primary:            #4b69ff;
+  --color-primary-hover:      #3a54d4;
+  --color-primary-light:      #EDF0FF;
+  --color-primary-light-hover: #F5F7FF;
+  --color-primary-border:     #B3C0FF;
+  --color-primary-rgb:        75, 105, 255;
+
+  /* Secondary (Dark) */
+  --color-dark:               #283752;
+  --color-dark-hover:         #1e2c42;
+  --color-dark-rgb:           40, 55, 82;
+
+  /* Accent */
+  --color-orange:             #D97706;
+  --color-orange-rgb:         217, 119, 6;
+  --color-red:                #DC2626;
+  --color-success:            #16A34A;
+  --color-online:             #6EE7B7;
+
+  /* Text */
+  --color-text-primary:       #0F1F2E;
+  --color-text-secondary:     #475569;
+  --color-text-tertiary:      #64748B;
+  --color-text-muted:         #94A3B8;
+  --color-text-disabled:      #CBD5E1;
+
+  /* Background */
+  --color-bg-white:           #FFFFFF;
+  --color-bg-page:            #F7F8FA;
+  --color-bg-subtle:          #F8FAFC;
+  --color-bg-hover:           #F1F5F9;
+  --color-border:             #DFE2E7;
+
+  /* Status */
+  --color-status-done-bg:     #DCFCE7;
+  --color-status-done-text:   #166534;
+  --color-status-done-dot:    #16A34A;
+  --color-status-pending-bg:  #F3F4F6;
+  --color-status-pending-text:#374151;
+  --color-status-pending-dot: #9CA3AF;
+  --color-status-process-bg:  #FEF3C7;
+  --color-status-process-text:#92400E;
+
+  /* Impact */
+  --color-impact-high-bg:     #FEF2F2;
+  --color-impact-medium-bg:   #FEF3C7;
+
+  /* Border Radius */
+  --radius-xs:   4px;
+  --radius-sm:   6px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-full: 9999px;
+
+  /* Button Size — height / radius */
+  --btn-height-xs:  24px;
+  --btn-radius-xs:  var(--radius-xs);   /* 4px */
+  --btn-height-sm:  28px;
+  --btn-radius-sm:  var(--radius-xs);   /* 4px */
+  --btn-height-md:  32px;
+  --btn-radius-md:  var(--radius-sm);   /* 6px */
+  --btn-height-lg:  36px;
+  --btn-radius-lg:  var(--radius-sm);   /* 6px */
+  --btn-height-xl:  40px;
+  --btn-radius-xl:  var(--radius-sm);   /* 6px */
+}

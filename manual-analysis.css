@@ -1,0 +1,564 @@
+/* ── Manual Analysis Page ──────────────────────── */
+
+.ma-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.ma-content > *:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+/* ── Board Tabs ───────────────────────────────── */
+.ma-board-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ma-board-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--btn-height-md);
+  padding: 6px 13px;
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--btn-radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ma-board-tab:hover:not(.active) {
+  background: var(--color-bg-subtle);
+}
+
+.ma-board-tab.active {
+  background: var(--color-dark);
+  color: var(--color-bg-white);
+  border-color: var(--color-dark);
+}
+
+.ma-tab-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 4px;
+}
+
+.ma-tab-edit,
+.ma-tab-delete {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0;
+}
+
+.ma-tab-edit:hover,
+.ma-tab-delete:hover {
+  color: var(--color-bg-white);
+}
+
+.ma-board-tab:not(.active) .ma-tab-edit,
+.ma-board-tab:not(.active) .ma-tab-delete {
+  color: var(--color-text-disabled);
+}
+
+.ma-board-tab:not(.active) .ma-tab-edit:hover,
+.ma-board-tab:not(.active) .ma-tab-delete:hover {
+  color: var(--color-text-tertiary);
+}
+
+.ma-tab-input {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius-xs);
+  color: var(--color-bg-white);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 2px 6px;
+  outline: none;
+  width: 160px;
+}
+
+.ma-board-tab-add {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--btn-height-md);
+  padding: 6px 12px;
+  background: var(--color-bg-white);
+  border: 1px dashed var(--color-text-disabled);
+  border-radius: var(--btn-radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ma-board-tab-add:hover {
+  background: var(--color-bg-subtle);
+}
+
+/* ── Board Info Bar ───────────────────────────── */
+.ma-board-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ma-board-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ma-board-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.ma-chart-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.ma-last-saved {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+.ma-board-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.ma-btn-save {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 16px;
+  background: var(--color-primary);
+  border: none;
+  border-radius: var(--btn-radius-lg);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-bg-white);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ma-btn-save:hover:not(.saving) {
+  background: var(--color-primary-hover);
+}
+
+.ma-btn-save.saving {
+  cursor: wait;
+}
+
+.ma-btn-add-chart {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 16px;
+  background: var(--color-dark);
+  border: none;
+  border-radius: var(--btn-radius-lg);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-bg-white);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ma-btn-add-chart:hover {
+  background: var(--color-dark-hover);
+}
+
+/* ── Empty Board Area ─────────────────────────── */
+.ma-empty-board {
+  border: 2px dashed var(--color-text-disabled);
+  height: 320px;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  padding: 40px 25px;
+}
+
+.ma-empty-board:hover {
+  border-color: var(--color-primary);
+}
+
+
+/* ── Chart Add Modal (unique parts) ───────────── */
+.ma-chart-types {
+  display: flex;
+  gap: 8px;
+}
+
+.ma-chart-type {
+  flex: 1;
+  height: 75px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+  transition: all 0.15s;
+}
+
+.ma-chart-type:hover:not(.selected) {
+  background: var(--color-bg-hover);
+}
+
+.ma-chart-type.selected {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.ma-axis-row {
+  display: flex;
+  gap: 12px;
+}
+
+.ma-axis-field {
+  flex: 1;
+}
+
+/* ── Chart Grid ───────────────────────────────── */
+.ma-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+/* ── Chart Card ───────────────────────────────── */
+.ma-chart-card {
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: visible;
+}
+
+.ma-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ma-card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-primary);
+}
+
+.ma-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.ma-card-gear {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  color: var(--color-text-muted);
+  padding: 0;
+  transition: color 0.15s, background 0.15s;
+}
+
+.ma-card-gear:hover {
+  color: var(--color-text-secondary);
+  background: var(--color-bg-hover);
+}
+
+.ma-card-tags {
+  display: flex;
+  gap: 8px;
+}
+
+.ma-card-tag-wrap {
+  position: relative;
+}
+
+.ma-card-tag {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-hover);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.ma-card-tag:hover {
+  border-color: var(--color-border);
+  background: var(--color-bg-subtle);
+}
+
+.ma-tag-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 120px;
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 4px;
+  z-index: 100;
+}
+
+.ma-tag-dropdown.open {
+  display: block;
+}
+
+.ma-tag-option {
+  display: block;
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  background: none;
+  border: none;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.ma-tag-option:hover {
+  background: var(--color-bg-hover);
+}
+
+.ma-tag-option.active {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.ma-card-chart {
+  width: 100%;
+  height: 280px;
+}
+
+/* ── Context Menu ────────────────────────────── */
+.ma-ctx-menu {
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06);
+  padding: 6px;
+  min-width: 180px;
+  z-index: 9999;
+}
+
+.ma-ctx-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-xs);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: background 0.12s;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.ma-ctx-item:hover {
+  background: var(--color-bg-hover);
+}
+
+.ma-ctx-divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 4px 0;
+}
+
+.ma-ctx-sub-wrap {
+  position: relative;
+}
+
+.ma-ctx-submenu {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: -6px;
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06);
+  padding: 6px;
+  min-width: 160px;
+  z-index: 10000;
+}
+
+.ma-ctx-sub-wrap:hover > .ma-ctx-submenu {
+  display: block;
+}
+
+.ma-ctx-has-sub {
+  position: relative;
+}
+
+/* ── Title Edit Input ──────────────────────── */
+.ma-title-edit-input {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-xs);
+  padding: 2px 8px;
+  outline: none;
+  width: 200px;
+}
+
+/* ── Table Chart ─────────────────────────────── */
+.ma-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.ma-table thead th {
+  background: var(--color-bg-subtle);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ma-table tbody td {
+  padding: 8px 12px;
+  color: var(--color-text-primary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ma-table tbody tr:hover {
+  background: var(--color-bg-hover);
+}
+
+/* ── Select Styling ─────────────────────────── */
+.modal-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2394A3B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  cursor: pointer;
+}
+
+/* ── Responsive ───────────────────────────────── */
+@media (max-width: 768px) {
+  .ma-board-tabs {
+    flex-wrap: wrap;
+  }
+
+  .ma-board-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .ma-board-actions {
+    width: 100%;
+  }
+
+  .ma-btn-save,
+  .ma-btn-add-chart {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .ma-chart-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ma-empty-board {
+    height: 200px;
+  }
+
+  .ma-axis-row {
+    flex-direction: column;
+  }
+}
+
+/* ── Delete Modal ─────────────────────────────── */
+.modal-sm {
+  max-width: 380px;
+  padding: 24px;
+}
+
+.modal-header-icon-danger {
+  background: #FEE2E2;
+  color: #DC2626;
+}
+
+.modal-btn-danger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: var(--btn-height-xl);
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--btn-radius-xl);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-bg-white);
+  background: #DC2626;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.modal-btn-danger:hover {
+  background: #B91C1C;
+}

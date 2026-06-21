@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agora BI - 예측 분석</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="auto-analysis.css">
+  <link rel="stylesheet" href="predictive.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- ── Sidebar ─────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <i data-lucide="bar-chart-2" style="width:16px;height:16px;stroke-width:2.5"></i>
+      </div>
+      <div class="logo-text">
+        <span class="logo-title">Agora BI</span>
+        <span class="logo-subtitle">AI Analytics Platform</span>
+      </div>
+      <div class="sidebar-toggle">
+        <i data-lucide="panel-left-close" style="width:14px;height:14px;stroke-width:2"></i>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-wrap">
+        <a class="nav-link" href="dashboard.html">
+          <div class="nav-icon">
+            <i data-lucide="house" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">홈</span>
+          </div>
+        </a>
+      </div>
+      <div class="nav-wrap">
+        <div class="ws-dropdown" id="ws-dropdown">
+          <button class="nav-link ws-toggle" id="ws-toggle">
+            <div class="nav-icon">
+              <i data-lucide="database" style="width:14px;height:14px;stroke-width:2"></i>
+            </div>
+            <div class="nav-text">
+              <span class="nav-main">워크스페이스 A</span>
+              <span class="nav-sub">제지 구매 데이터</span>
+            </div>
+            <i data-lucide="chevron-down" class="nav-chevron ws-chevron" id="ws-chevron" style="width:12px;height:12px;stroke-width:2"></i>
+          </button>
+          <div class="ws-list" id="ws-list">
+            <button class="ws-item selected" data-ws="A">
+              <span class="ws-item-name">워크스페이스 A</span>
+              <span class="ws-item-desc">제지 구매 데이터</span>
+            </button>
+            <button class="ws-item" data-ws="B">
+              <span class="ws-item-name">워크스페이스 B</span>
+              <span class="ws-item-desc">원자재 구매 데이터</span>
+            </button>
+            <button class="ws-item" data-ws="C">
+              <span class="ws-item-name">워크스페이스 C</span>
+              <span class="ws-item-desc">포장재 구매 데이터</span>
+            </button>
+            <button class="ws-item ws-add">
+              <i data-lucide="plus" style="width:12px;height:12px;stroke-width:2"></i>
+              <span class="ws-add-label">새 워크스페이스 추가</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <hr class="nav-divider">
+      <div class="nav-wrap">
+        <a class="nav-link" href="auto-analysis.html">
+          <div class="nav-icon">
+            <i data-lucide="zap" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">자동 데이터 분석</span>
+            <span class="nav-sub">AI Auto Analysis</span>
+          </div>
+        </a>
+      </div>
+      <div class="nav-wrap">
+        <a class="nav-link" href="manual-analysis.html">
+          <div class="nav-icon">
+            <i data-lucide="layout-dashboard" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">수동 데이터 분석</span>
+            <span class="nav-sub">Manual Board</span>
+          </div>
+        </a>
+      </div>
+      <div class="nav-wrap">
+        <a class="nav-link active" href="predictive.html">
+          <div class="nav-icon">
+            <i data-lucide="trending-up" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">예측 분석</span>
+            <span class="nav-sub">Predictive Analytics</span>
+          </div>
+
+        </a>
+      </div>
+      <div class="nav-wrap">
+        <a class="nav-link" href="#">
+          <div class="nav-icon">
+            <i data-lucide="bot" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">AI 에이전트 &amp; 리포트</span>
+            <span class="nav-sub">Agent &amp; Report</span>
+          </div>
+        </a>
+      </div>
+    </nav>
+    <div class="sidebar-user">
+      <div class="user-row">
+        <div class="user-avatar"><span>관</span></div>
+        <div class="user-info">
+          <span class="user-name">관리자</span>
+          <span class="user-email">admin@agora-bi.co.kr</span>
+        </div>
+        <button class="user-btn" aria-label="로그아웃">
+          <i data-lucide="log-out" style="width:12px;height:12px;stroke-width:2"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Main ────────────────────────────────── -->
+  <div class="main-wrapper">
+    <header class="header">
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="메뉴">
+        <i data-lucide="menu" style="width:18px;height:18px;stroke-width:2"></i>
+      </button>
+      <div class="header-spacer"></div>
+      <button class="header-btn" aria-label="알림"><i data-lucide="bell" style="width:14px;height:14px;stroke-width:2"></i><span class="notif-dot"></span></button>
+      <button class="header-btn" aria-label="설정"><i data-lucide="settings" style="width:14px;height:14px;stroke-width:2"></i></button>
+    </header>
+
+    <main class="content pv-content">
+
+      <!-- ── Page Header ────────────────────── -->
+      <div class="aa-page-header">
+        <div class="aa-header-left">
+          <div class="aa-title-row">
+            <h1 class="aa-title">예측 분석</h1>
+            <span class="aa-ws-badge">워크스페이스 A</span>
+          </div>
+          <p class="aa-desc">변수를 조절하여 미래 데이터를 시뮬레이션하고 예측 차트를 확인하세요</p>
+        </div>
+        <div class="aa-header-actions">
+          <button class="aa-action-btn"><i data-lucide="share-2" style="width:14px;height:14px;stroke-width:2"></i> 공유</button>
+          <button class="aa-action-btn"><i data-lucide="pencil" style="width:14px;height:14px;stroke-width:2"></i> 편집</button>
+        </div>
+      </div>
+
+      <!-- ── Body: Sidebar + Charts ─────────── -->
+      <div class="pv-body">
+
+        <!-- Left Panel -->
+        <div class="pv-panel">
+
+          <!-- Data Filter -->
+          <div class="pv-card">
+            <div class="pv-card-header">
+              <i data-lucide="sliders-horizontal" style="width:14px;height:14px;stroke-width:2;color:var(--color-primary)"></i>
+              <span>데이터 필터</span>
+            </div>
+            <div class="pv-filter-list">
+              <button class="pv-filter-item active"><span class="pv-filter-dot active"></span>전체 데이터</button>
+              <button class="pv-filter-item"><span class="pv-filter-dot"></span>인쇄용지</button>
+              <button class="pv-filter-item"><span class="pv-filter-dot"></span>신문용지</button>
+              <button class="pv-filter-item"><span class="pv-filter-dot"></span>골판지원지</button>
+              <button class="pv-filter-item"><span class="pv-filter-dot"></span>백판지</button>
+              <button class="pv-filter-item"><span class="pv-filter-dot"></span>특수지</button>
+            </div>
+          </div>
+
+          <!-- Variable Control -->
+          <div class="pv-card">
+            <div class="pv-card-header mb16">
+              <i data-lucide="settings-2" style="width:14px;height:14px;stroke-width:2;color:var(--color-primary)"></i>
+              <span>Variable Control</span>
+            </div>
+            <div class="pv-sliders">
+              <div class="pv-slider-group">
+                <div class="pv-slider-label"><span class="pv-slider-name">수요 증가율</span><span class="pv-slider-val" id="val-demand">50%</span></div>
+                <input type="range" class="pv-range" id="range-demand" min="0" max="100" value="50">
+                <div class="pv-slider-hints"><span>0%</span><span>연간 수요 증가 예상치</span><span>100%</span></div>
+              </div>
+              <div class="pv-slider-group">
+                <div class="pv-slider-label"><span class="pv-slider-name">원자재 가격 변동</span><span class="pv-slider-val" id="val-material">60%</span></div>
+                <input type="range" class="pv-range" id="range-material" min="0" max="100" value="60">
+                <div class="pv-slider-hints"><span>0%</span><span>원자재 가격 상승 예상치</span><span>100%</span></div>
+              </div>
+              <div class="pv-slider-group">
+                <div class="pv-slider-label"><span class="pv-slider-name">공급 안정성</span><span class="pv-slider-val" id="val-supply">70%</span></div>
+                <input type="range" class="pv-range" id="range-supply" min="0" max="100" value="70">
+                <div class="pv-slider-hints"><span>0%</span><span>공급망 안정성 지수</span><span>100%</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 예측 표시 Toggle -->
+          <div class="pv-card pv-toggle-card">
+            <div class="pv-toggle-row">
+              <div>
+                <div class="pv-toggle-title">예측 표시</div>
+                <div class="pv-toggle-desc">차트에 예측 구간 표시</div>
+              </div>
+              <label class="pv-switch">
+                <input type="checkbox" id="pv-forecast-toggle" checked>
+                <span class="pv-switch-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 예측 요약 -->
+          <div class="pv-card pv-summary-card pv-forecast">
+            <div class="pv-card-header">
+              <i data-lucide="file-text" style="width:14px;height:14px;stroke-width:2;color:var(--color-primary)"></i>
+              <span>예측 요약</span>
+            </div>
+            <div class="pv-summary-rows">
+              <div class="pv-summary-row"><span>2025년 예상 구매 금액</span><span class="pv-summary-value green">200억 원</span></div>
+              <div class="pv-summary-row"><span>전년 대비 증감</span><span class="pv-summary-value positive">0%</span></div>
+              <div class="pv-summary-row"><span>신뢰 구간</span><span class="pv-summary-value dark">±7%</span></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Charts -->
+        <div class="pv-charts">
+
+          <!-- Chart 1: 구매 금액 예측 -->
+          <div class="pv-chart-card">
+            <div class="pv-chart-header">
+              <div class="pv-chart-title-row">
+                <span class="pv-chart-title">구매 금액 예측 (2025년)</span>
+                <span class="pv-badge-active pv-forecast">예측 활성화</span>
+              </div>
+              <span class="pv-var-label">변수 조정: 50%</span>
+            </div>
+            <div class="pv-chart-area">
+              <svg viewBox="0 0 420 200" class="pv-svg">
+                <line x1="35" y1="10" x2="35" y2="175" stroke="#E2E8F0" stroke-width="1"/>
+                <line x1="35" y1="175" x2="415" y2="175" stroke="#E2E8F0" stroke-width="1"/>
+                <text x="30" y="178" text-anchor="end" class="pv-axis">0</text>
+                <text x="30" y="145" text-anchor="end" class="pv-axis">1500</text>
+                <text x="30" y="112" text-anchor="end" class="pv-axis">3000</text>
+                <text x="30" y="79" text-anchor="end" class="pv-axis">4500</text>
+                <text x="30" y="46" text-anchor="end" class="pv-axis">6000</text>
+                <polyline fill="none" stroke="#0F1F2E" stroke-width="2" points="50,130 90,125 130,118 170,115 210,108 250,100 290,95"/>
+                <polyline fill="none" stroke="#12926B" stroke-width="2" stroke-dasharray="6,4" class="pv-forecast" points="290,95 330,85 370,70 400,60"/>
+                <rect x="290" y="55" width="115" height="50" rx="4" fill="#12926B" opacity="0.08" class="pv-forecast"/>
+                <text x="400" y="68" class="pv-label-forecast pv-forecast">현재</text>
+                <text x="50" y="192" text-anchor="middle" class="pv-axis">2022 Q1</text>
+                <text x="130" y="192" text-anchor="middle" class="pv-axis">2022 Q3</text>
+                <text x="210" y="192" text-anchor="middle" class="pv-axis">2023 Q3</text>
+                <text x="290" y="192" text-anchor="middle" class="pv-axis">2024 Q3</text>
+                <text x="370" y="192" text-anchor="middle" class="pv-axis">2025 Q1</text>
+                <text x="405" y="192" text-anchor="middle" class="pv-axis">2025 Q4</text>
+              </svg>
+            </div>
+            <div class="pv-chart-legend">
+              <span class="pv-legend"><span class="pv-legend-line" style="background:#94A3B8"></span>상한</span>
+              <span class="pv-legend"><span class="pv-legend-dot" style="background:#0F1F2E"></span>실적</span>
+              <span class="pv-legend"><span class="pv-legend-dot" style="background:#12926B"></span>예측</span>
+            </div>
+          </div>
+
+          <!-- Chart 2: 단가 변동 예측 -->
+          <div class="pv-chart-card">
+            <div class="pv-chart-header">
+              <div class="pv-chart-title-row">
+                <span class="pv-chart-title">단가 변동 예측 (2025년)</span>
+                <span class="pv-badge-active pv-forecast">예측 활성화</span>
+              </div>
+              <span class="pv-var-label">변수 조정: 60%</span>
+            </div>
+            <div class="pv-chart-area">
+              <svg viewBox="0 0 420 200" class="pv-svg">
+                <line x1="35" y1="10" x2="35" y2="175" stroke="#E2E8F0" stroke-width="1"/>
+                <line x1="35" y1="175" x2="415" y2="175" stroke="#E2E8F0" stroke-width="1"/>
+                <text x="30" y="178" text-anchor="end" class="pv-axis">0</text>
+                <text x="30" y="145" text-anchor="end" class="pv-axis">2000</text>
+                <text x="30" y="112" text-anchor="end" class="pv-axis">4000</text>
+                <text x="30" y="79" text-anchor="end" class="pv-axis">6000</text>
+                <text x="30" y="46" text-anchor="end" class="pv-axis">8000</text>
+                <polyline fill="none" stroke="#0F1F2E" stroke-width="2" points="50,120 90,115 130,108 170,100 210,92 250,85 290,78"/>
+                <polyline fill="none" stroke="#12926B" stroke-width="2" stroke-dasharray="6,4" class="pv-forecast" points="290,78 330,65 370,50 400,38"/>
+                <rect x="290" y="30" width="115" height="55" rx="4" fill="#12926B" opacity="0.08" class="pv-forecast"/>
+                <text x="400" y="43" class="pv-label-forecast pv-forecast">현재</text>
+                <text x="50" y="192" text-anchor="middle" class="pv-axis">2022 Q1</text>
+                <text x="130" y="192" text-anchor="middle" class="pv-axis">2022 Q3</text>
+                <text x="210" y="192" text-anchor="middle" class="pv-axis">2023 Q3</text>
+                <text x="290" y="192" text-anchor="middle" class="pv-axis">2024 Q3</text>
+                <text x="370" y="192" text-anchor="middle" class="pv-axis">2025 Q1</text>
+                <text x="405" y="192" text-anchor="middle" class="pv-axis">2025 Q4</text>
+              </svg>
+            </div>
+            <div class="pv-chart-legend">
+              <span class="pv-legend"><span class="pv-legend-line" style="background:#94A3B8"></span>상한</span>
+              <span class="pv-legend"><span class="pv-legend-dot" style="background:#0F1F2E"></span>실적</span>
+              <span class="pv-legend"><span class="pv-legend-dot" style="background:#12926B"></span>예측</span>
+            </div>
+          </div>
+
+          <!-- Chart 3: 발주 건수 예측 -->
+          <div class="pv-chart-card">
+            <div class="pv-chart-header">
+              <div class="pv-chart-title-row">
+                <span class="pv-chart-title">발주 건수 예측 (2025년)</span>
+                <span class="pv-badge-active pv-forecast">예측 활성화</span>
+              </div>
+              <span class="pv-var-label">변수 조정: 70%</span>
+            </div>
+            <div class="pv-chart-area">
+              <svg viewBox="0 0 420 200" class="pv-svg">
+                <line x1="35" y1="10" x2="35" y2="175" stroke="#E2E8F0" stroke-width="1"/>
+                <line x1="35" y1="175" x2="415" y2="175" stroke="#E2E8F0" stroke-width="1"/>
+                <text x="30" y="178" text-anchor="end" class="pv-axis">0</text>
+                <text x="30" y="145" text-anchor="end" class="pv-axis">2000</text>
+                <text x="30" y="112" text-anchor="end" class="pv-axis">4000</text>
+                <text x="30" y="79" text-anchor="end" class="pv-axis">6000</text>
+                <text x="30" y="46" text-anchor="end" class="pv-axis">8000</text>
+                <polyline fill="none" stroke="#0F1F2E" stroke-width="2" points="50,140 90,135 130,130 170,125 210,118 250,110 290,100"/>
+                <polyline fill="none" stroke="#12926B" stroke-width="2" stroke-dasharray="6,4" class="pv-forecast" points="290,100 330,88 370,72 400,60"/>
+                <rect x="290" y="52" width="115" height="56" rx="4" fill="#12926B" opacity="0.08" class="pv-forecast"/>
+                <text x="400" y="65" class="pv-label-forecast pv-forecast">현재</text>
+                <text x="50" y="192" text-anchor="middle" class="pv-axis">2022 Q1</text>
+                <text x="130" y="192" text-anchor="middle" class="pv-axis">2022 Q3</text>
+                <text x="210" y="192" text-anchor="middle" class="pv-axis">2023 Q3</text>
+                <text x="290" y="192" text-anchor="middle" class="pv-axis">2024 Q3</text>
+                <text x="370" y="192" text-anchor="middle" class="pv-axis">2025 Q1</text>
+                <text x="405" y="192" text-anchor="middle" class="pv-axis">2025 Q4</text>
+              </svg>
+            </div>
+            <div class="pv-chart-legend">
+              <span class="pv-legend"><span class="pv-legend-line" style="background:#94A3B8"></span>상한</span>
+              <span class="pv-legend"><span class="pv-legend-dot" style="background:#0F1F2E"></span>실적</span>
+              <span class="pv-legend"><span class="pv-legend-dot" style="background:#12926B"></span>예측</span>
+            </div>
+          </div>
+
+          <!-- Chart 4: 리드타임 예측 -->
+          <div class="pv-chart-card">
+            <div class="pv-chart-header">
+              <div class="pv-chart-title-row">
+                <span class="pv-chart-title">리드타임 예측 (2025년)</span>
+                <span class="pv-badge-active pv-forecast">예측 활성화</span>
+              </div>
+              <span class="pv-var-label">변수 조정: 50%</span>
+            </div>
+            <div class="pv-chart-area">
+              <svg viewBox="0 0 420 200" class="pv-svg">
+                <line x1="35" y1="10" x2="35" y2="175" stroke="#E2E8F0" stroke-width="1"/>
+                <line x1="35" y1="175" x2="415" y2="175" stroke="#E2E8F0" stroke-width="1"/>
+                <text x="30" y="178" text-anchor="end" class="pv-axis">0</text>
+                <text x="30" y="145" text-anchor="end" class="pv-axis">1500</text>
+                <text x="30" y="112" text-anchor="end" class="pv-axis">3000</text>
+                <text x="30" y="79" text-anchor="end" class="pv-axis">4500</text>
+                <text x="30" y="46" text-anchor="end" class="pv-axis">6000</text>
+                <polyline fill="none" stroke="#0F1F2E" stroke-width="2" points="50,115 90,110 130,105 170,100 210,95 250,88 290,82"/>
+                <polyline fill="none" stroke="#12926B" stroke-width="2" stroke-dasharray="6,4" class="pv-forecast" points="290,82 330,70 370,55 400,42"/>
+                <rect x="290" y="35" width="115" height="55" rx="4" fill="#12926B" opacity="0.08" class="pv-forecast"/>
+                <text x="400" y="48" class="pv-label-forecast pv-forecast">현재</text>
+                <text x="50" y="192" text-anchor="middle" class="pv-axis">2022 Q1</text>
+                <text x="130" y="192" text-anchor="middle" class="pv-axis">2022 Q3</text>
+                <text x="210" y="192" text-anchor="middle" class="pv-axis">2023 Q3</text>
+                <text x="290" y="192" text-anchor="middle" class="pv-axis">2024 Q3</text>
+                <text x="370" y="192" text-anchor="middle" class="pv-axis">2025 Q1</text>
+                <text x="405" y="192" text-anchor="middle" class="pv-axis">2025 Q4</text>
+              </svg>
+            </div>
+            <div class="pv-chart-legend">
+              <span class="pv-legend"><span class="pv-legend-line" style="background:#94A3B8"></span>상한</span>
+              <span class="pv-legend"><span class="pv-legend-dot" style="background:#0F1F2E"></span>실적</span>
+              <span class="pv-legend"><span class="pv-legend-dot" style="background:#12926B"></span>예측</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>lucide.createIcons();</script>
+  <script>
+  (function() {
+    // Workspace dropdown
+    var toggle = document.getElementById('ws-toggle');
+    var dropdown = document.getElementById('ws-dropdown');
+    var chevron = document.getElementById('ws-chevron');
+    toggle.addEventListener('click', function() {
+      var isOpen = dropdown.classList.toggle('open');
+      chevron.setAttribute('data-lucide', isOpen ? 'chevron-up' : 'chevron-down');
+      lucide.createIcons();
+    });
+
+    // Data filter tabs
+    document.querySelectorAll('.pv-filter-item').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.pv-filter-item.active').forEach(function(el) { el.classList.remove('active'); el.querySelector('.pv-filter-dot').classList.remove('active'); });
+        btn.classList.add('active');
+        btn.querySelector('.pv-filter-dot').classList.add('active');
+      });
+    });
+
+    // Range sliders
+    document.getElementById('range-demand').addEventListener('input', function() { document.getElementById('val-demand').textContent = this.value + '%'; });
+    document.getElementById('range-material').addEventListener('input', function() { document.getElementById('val-material').textContent = this.value + '%'; });
+    document.getElementById('range-supply').addEventListener('input', function() { document.getElementById('val-supply').textContent = this.value + '%'; });
+
+    // Forecast toggle
+    document.getElementById('pv-forecast-toggle').addEventListener('change', function() {
+      var els = document.querySelectorAll('.pv-forecast');
+      var hidden = !this.checked;
+      els.forEach(function(el) {
+        if (el.tagName === 'polyline' || el.tagName === 'rect' || el.tagName === 'text') {
+          el.style.display = hidden ? 'none' : '';
+        } else {
+          el.style.display = hidden ? 'none' : '';
+        }
+      });
+    });
+  })();
+  </script>
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <script>
+  (function() {
+    var btn = document.getElementById('mobile-menu-btn');
+    var sidebar = document.querySelector('.sidebar');
+    var overlay = document.getElementById('sidebar-overlay');
+    if (!btn || !sidebar || !overlay) return;
+    btn.addEventListener('click', function() {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('active');
+    });
+    overlay.addEventListener('click', function() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    });
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agora BI - 수동 데이터 분석</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="auto-analysis.css">
+  <link rel="stylesheet" href="manual-analysis.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+</head>
+<body>
+
+  <!-- ── Sidebar ─────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <i data-lucide="bar-chart-2" style="width:16px;height:16px;stroke-width:2.5"></i>
+      </div>
+      <div class="logo-text">
+        <span class="logo-title">Agora BI</span>
+        <span class="logo-subtitle">AI Analytics Platform</span>
+      </div>
+      <div class="sidebar-toggle">
+        <i data-lucide="panel-left-close" style="width:14px;height:14px;stroke-width:2"></i>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-wrap">
+        <a class="nav-link" href="dashboard.html">
+          <div class="nav-icon">
+            <i data-lucide="house" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">홈</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="nav-wrap">
+        <div class="ws-dropdown" id="ws-dropdown">
+          <button class="nav-link ws-toggle" id="ws-toggle">
+            <div class="nav-icon">
+              <i data-lucide="database" style="width:14px;height:14px;stroke-width:2"></i>
+            </div>
+            <div class="nav-text">
+              <span class="nav-main">워크스페이스 A</span>
+              <span class="nav-sub">제지 구매 데이터</span>
+            </div>
+            <i data-lucide="chevron-down" class="nav-chevron ws-chevron" id="ws-chevron" style="width:12px;height:12px;stroke-width:2"></i>
+          </button>
+          <div class="ws-list" id="ws-list">
+            <button class="ws-item selected" data-ws="A">
+              <span class="ws-item-name">워크스페이스 A</span>
+              <span class="ws-item-desc">제지 구매 데이터</span>
+            </button>
+            <button class="ws-item" data-ws="B">
+              <span class="ws-item-name">워크스페이스 B</span>
+              <span class="ws-item-desc">원자재 구매 데이터</span>
+            </button>
+            <button class="ws-item" data-ws="C">
+              <span class="ws-item-name">워크스페이스 C</span>
+              <span class="ws-item-desc">포장재 구매 데이터</span>
+            </button>
+            <button class="ws-item ws-add">
+              <i data-lucide="plus" style="width:12px;height:12px;stroke-width:2"></i>
+              <span class="ws-add-label">새 워크스페이스 추가</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <hr class="nav-divider">
+
+      <div class="nav-wrap">
+        <a class="nav-link" href="auto-analysis.html">
+          <div class="nav-icon">
+            <i data-lucide="zap" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">자동 데이터 분석</span>
+            <span class="nav-sub">AI Auto Analysis</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="nav-wrap">
+        <a class="nav-link active" href="manual-analysis.html">
+          <div class="nav-icon">
+            <i data-lucide="layout-dashboard" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">수동 데이터 분석</span>
+            <span class="nav-sub">Manual Board</span>
+          </div>
+
+        </a>
+      </div>
+
+      <div class="nav-wrap">
+        <a class="nav-link" href="predictive.html">
+          <div class="nav-icon">
+            <i data-lucide="trending-up" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">예측 분석</span>
+            <span class="nav-sub">Predictive Analytics</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="nav-wrap">
+        <a class="nav-link" href="#">
+          <div class="nav-icon">
+            <i data-lucide="bot" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">AI 에이전트 &amp; 리포트</span>
+            <span class="nav-sub">Agent &amp; Report</span>
+          </div>
+        </a>
+      </div>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-row">
+        <div class="user-avatar"><span>관</span></div>
+        <div class="user-info">
+          <span class="user-name">관리자</span>
+          <span class="user-email">admin@agora-bi.co.kr</span>
+        </div>
+        <button class="user-btn" aria-label="로그아웃">
+          <i data-lucide="log-out" style="width:12px;height:12px;stroke-width:2"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Main ────────────────────────────────── -->
+  <div class="main-wrapper">
+    <header class="header">
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="메뉴">
+        <i data-lucide="menu" style="width:18px;height:18px;stroke-width:2"></i>
+      </button>
+      <div class="header-spacer"></div>
+      <button class="header-btn" aria-label="알림">
+        <i data-lucide="bell" style="width:14px;height:14px;stroke-width:2"></i>
+        <span class="notif-dot"></span>
+      </button>
+      <button class="header-btn" aria-label="설정">
+        <i data-lucide="settings" style="width:14px;height:14px;stroke-width:2"></i>
+      </button>
+    </header>
+
+    <main class="content ma-content">
+
+      <!-- ── Page Header ────────────────────── -->
+      <div class="aa-page-header">
+        <div class="aa-header-left">
+          <div class="aa-title-row">
+            <h1 class="aa-title">수동 데이터 분석</h1>
+            <span class="aa-ws-badge">워크스페이스 A</span>
+          </div>
+          <p class="aa-desc">원하는 차트를 직접 추가하고 드릴다운으로 상세 내역을 탐색하세요</p>
+        </div>
+        <div class="aa-header-actions">
+          <button class="aa-action-btn">
+            <i data-lucide="share-2" style="width:14px;height:14px;stroke-width:2"></i>
+            공유
+          </button>
+          <button class="aa-action-btn">
+            <i data-lucide="pencil" style="width:14px;height:14px;stroke-width:2"></i>
+            편집
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Board Tabs ─────────────────────── -->
+      <div class="ma-board-tabs">
+        <div class="ma-board-tab active">
+          <i data-lucide="layout-grid" style="width:14px;height:14px;stroke-width:2"></i>
+          <span>새보드</span>
+          <div class="ma-tab-actions">
+            <button class="ma-tab-edit" aria-label="편집">
+              <i data-lucide="pencil" style="width:12px;height:12px;stroke-width:2"></i>
+            </button>
+            <button class="ma-tab-delete" aria-label="삭제">
+              <i data-lucide="x" style="width:12px;height:12px;stroke-width:2"></i>
+            </button>
+          </div>
+        </div>
+        <button class="ma-board-tab-add">
+          <i data-lucide="plus" style="width:14px;height:14px;stroke-width:2"></i>
+          <span>새 보드</span>
+        </button>
+      </div>
+
+      <!-- ── Board Info Bar ─────────────────── -->
+      <div class="ma-board-info">
+        <div class="ma-board-meta">
+          <span class="ma-board-name">새보드</span>
+          <span class="ma-chart-count">0개 차트</span>
+          <span class="ma-last-saved">마지막 저장 2026.05.04</span>
+        </div>
+        <div class="ma-board-actions">
+          <button class="ma-btn-save" id="btn-save-board">
+            <i data-lucide="save" style="width:14px;height:14px;stroke-width:2"></i>
+            보드 저장
+          </button>
+          <button class="ma-btn-add-chart">
+            <i data-lucide="plus" style="width:14px;height:14px;stroke-width:2"></i>
+            차트 추가
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Chart Grid ───────────────────────── -->
+      <div class="ma-chart-grid" id="ma-chart-grid" style="display:none"></div>
+
+      <!-- ── Empty Board Area ───────────────── -->
+      <div class="empty-state ma-empty-board" id="ma-empty-board">
+        <div class="empty-state-icon">
+          <i data-lucide="plus" style="width:28px;height:28px;stroke-width:1.5"></i>
+        </div>
+        <span class="empty-state-title">첫 번째 차트를 추가해보세요</span>
+        <span class="empty-state-desc">막대, 선형, 산점도 차트 지원</span>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ── Modal: 차트 추가 ──────────────────── -->
+  <div class="modal-overlay" id="chart-modal-overlay">
+    <div class="modal" id="chart-modal">
+      <button class="modal-close" id="chart-modal-close" aria-label="닫기">
+        <i data-lucide="x" style="width:16px;height:16px;stroke-width:2"></i>
+      </button>
+
+      <div class="modal-header">
+        <div class="modal-header-icon">
+          <i data-lucide="bar-chart-3" style="width:16px;height:16px;stroke-width:2"></i>
+        </div>
+        <div class="modal-header-text">
+          <h3 class="modal-title">차트 추가</h3>
+          <p class="modal-subtitle">보드에 새 차트를 추가합니다</p>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-field">
+          <label class="modal-label">차트 유형</label>
+          <div class="ma-chart-types">
+            <button class="ma-chart-type selected" data-type="bar">
+              <i data-lucide="bar-chart-3" style="width:18px;height:18px;stroke-width:2"></i>
+              <span>막대</span>
+            </button>
+            <button class="ma-chart-type" data-type="line">
+              <i data-lucide="trending-up" style="width:18px;height:18px;stroke-width:2"></i>
+              <span>선형</span>
+            </button>
+            <button class="ma-chart-type" data-type="scatter">
+              <i data-lucide="git-branch" style="width:18px;height:18px;stroke-width:2"></i>
+              <span>산점도</span>
+            </button>
+            <button class="ma-chart-type" data-type="pie">
+              <i data-lucide="pie-chart" style="width:18px;height:18px;stroke-width:2"></i>
+              <span>파이</span>
+            </button>
+            <button class="ma-chart-type" data-type="table">
+              <i data-lucide="table" style="width:18px;height:18px;stroke-width:2"></i>
+              <span>테이블</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="modal-field">
+          <label class="modal-label">차트 제목 <span class="required">*</span></label>
+          <input type="text" class="modal-input" id="chart-title" placeholder="예: 공급업체별 구매 금액">
+        </div>
+
+        <div class="ma-axis-row">
+          <div class="modal-field ma-axis-field">
+            <label class="modal-label">X축 (카테고리)</label>
+            <select class="modal-input modal-select" id="chart-x">
+              <option value="">컬럼을 선택하세요</option>
+              <option value="업체명" selected>업체명</option>
+              <option value="품목">품목</option>
+              <option value="거래일자">거래일자</option>
+              <option value="납기월">납기월</option>
+              <option value="지역">지역</option>
+              <option value="담당자">담당자</option>
+            </select>
+          </div>
+          <div class="modal-field ma-axis-field">
+            <label class="modal-label">Y축 (값)</label>
+            <select class="modal-input modal-select" id="chart-y">
+              <option value="">컬럼을 선택하세요</option>
+              <option value="구매금액" selected>구매금액</option>
+              <option value="수량">수량</option>
+              <option value="단가">단가</option>
+              <option value="총판매액">총판매액</option>
+              <option value="이익률">이익률</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="modal-btn-cancel" id="chart-modal-cancel">취소</button>
+        <button class="modal-btn-submit disabled" id="chart-modal-submit" disabled>
+          <i data-lucide="plus" style="width:14px;height:14px;stroke-width:2"></i>
+          차트 추가
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Modal: 새 보드 만들기 ────────────── -->
+  <div class="modal-overlay" id="board-modal-overlay">
+    <div class="modal" id="board-modal">
+      <button class="modal-close" id="board-modal-close" aria-label="닫기">
+        <i data-lucide="x" style="width:16px;height:16px;stroke-width:2"></i>
+      </button>
+
+      <div class="modal-header">
+        <div class="modal-header-icon">
+          <i data-lucide="layout-grid" style="width:16px;height:16px;stroke-width:2"></i>
+        </div>
+        <div class="modal-header-text">
+          <h3 class="modal-title">새 분석 보드 만들기</h3>
+          <p class="modal-subtitle">새 보드를 생성하여 차트를 구성합니다</p>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-field">
+          <label class="modal-label">보드 이름 <span class="required">*</span></label>
+          <input type="text" class="modal-input" id="board-name-input" placeholder="예: 원자재 가격 분석">
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="modal-btn-cancel" id="board-modal-cancel">취소</button>
+        <button class="modal-btn-submit disabled" id="board-modal-submit" disabled>
+          <i data-lucide="plus" style="width:14px;height:14px;stroke-width:2"></i>
+          만들기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Modal: 보드 삭제 확인 ────────────── -->
+  <div class="modal-overlay" id="delete-modal-overlay">
+    <div class="modal modal-sm" id="delete-modal">
+      <div class="modal-header">
+        <div class="modal-header-icon modal-header-icon-danger">
+          <i data-lucide="alert-triangle" style="width:16px;height:16px;stroke-width:2"></i>
+        </div>
+        <div class="modal-header-text">
+          <h3 class="modal-title">보드 삭제</h3>
+          <p class="modal-subtitle">이 보드를 삭제하시겠습니까?</p>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="modal-btn-cancel" id="delete-modal-cancel">취소</button>
+        <button class="modal-btn-danger" id="delete-modal-confirm">
+          <i data-lucide="trash-2" style="width:14px;height:14px;stroke-width:2"></i>
+          삭제
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>lucide.createIcons();</script>
+
+  <script>
+  (function() {
+    // Workspace dropdown
+    var toggle = document.getElementById('ws-toggle');
+    var dropdown = document.getElementById('ws-dropdown');
+    var chevron = document.getElementById('ws-chevron');
+    toggle.addEventListener('click', function() {
+      var isOpen = dropdown.classList.toggle('open');
+      chevron.setAttribute('data-lucide', isOpen ? 'chevron-up' : 'chevron-down');
+      lucide.createIcons();
+    });
+
+    // Tab inline edit
+    function setupTabEdit(tab) {
+      var editBtn = tab.querySelector('.ma-tab-edit');
+      var nameSpan = tab.querySelector('span');
+      if (!editBtn || !nameSpan) return;
+
+      editBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (tab.querySelector('.ma-tab-input')) return;
+
+        var current = nameSpan.textContent;
+        nameSpan.style.display = 'none';
+        editBtn.style.display = 'none';
+
+        var input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'ma-tab-input';
+        input.value = current;
+        tab.insertBefore(input, nameSpan.nextSibling);
+        input.focus();
+        input.select();
+
+        function save() {
+          var val = input.value.trim() || current;
+          nameSpan.textContent = val;
+          nameSpan.style.display = '';
+          editBtn.style.display = '';
+          input.remove();
+          if (tab.classList.contains('active')) {
+            document.querySelector('.ma-board-name').textContent = val;
+          }
+        }
+
+        input.addEventListener('blur', save);
+        input.addEventListener('keydown', function(ev) {
+          if (ev.key === 'Enter') input.blur();
+        });
+      });
+    }
+
+    setupTabEdit(document.querySelector('.ma-board-tab'));
+
+    // First tab click event
+    var firstTab = document.querySelector('.ma-board-tab');
+    firstTab.addEventListener('click', function(e) {
+      if (e.target.closest('.ma-tab-delete') || e.target.closest('.ma-tab-edit')) return;
+      document.querySelectorAll('.ma-board-tab.active').forEach(function(t) { t.classList.remove('active'); });
+      firstTab.classList.add('active');
+      document.querySelector('.ma-board-name').textContent = firstTab.querySelector('span').textContent;
+    });
+
+    // Delete board modal
+    var deleteOverlay = document.getElementById('delete-modal-overlay');
+    var deleteCancel = document.getElementById('delete-modal-cancel');
+    var deleteConfirm = document.getElementById('delete-modal-confirm');
+    var tabToDelete = null;
+
+    function updateDeleteButtons() {
+      var allTabs = document.querySelectorAll('.ma-board-tab');
+      allTabs.forEach(function(tab) {
+        var deleteBtn = tab.querySelector('.ma-tab-delete');
+        if (deleteBtn) {
+          deleteBtn.style.display = allTabs.length <= 1 ? 'none' : '';
+        }
+      });
+    }
+
+    function openDeleteModal(tab) {
+      var allTabs = document.querySelectorAll('.ma-board-tab');
+      if (allTabs.length <= 1) return;
+      tabToDelete = tab;
+      deleteOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDeleteModal() {
+      deleteOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+      tabToDelete = null;
+    }
+
+    deleteCancel.addEventListener('click', closeDeleteModal);
+    deleteOverlay.addEventListener('click', function(e) { if (e.target === deleteOverlay) closeDeleteModal(); });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && deleteOverlay.classList.contains('active')) closeDeleteModal();
+    });
+
+    deleteConfirm.addEventListener('click', function() {
+      if (!tabToDelete) return;
+      var wasActive = tabToDelete.classList.contains('active');
+      tabToDelete.remove();
+      if (wasActive) {
+        var remaining = document.querySelectorAll('.ma-board-tab');
+        if (remaining.length > 0) {
+          remaining[0].classList.add('active');
+          document.querySelector('.ma-board-name').textContent = remaining[0].querySelector('span').textContent;
+        }
+      }
+      closeDeleteModal();
+      updateDeleteButtons();
+    });
+
+    function setupTabDelete(tab) {
+      var deleteBtn = tab.querySelector('.ma-tab-delete');
+      if (deleteBtn) {
+        deleteBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          openDeleteModal(tab);
+        });
+      }
+    }
+
+    setupTabDelete(firstTab);
+    updateDeleteButtons();
+
+    // Board save button
+    var saveBtn = document.getElementById('btn-save-board');
+    saveBtn.addEventListener('click', function() {
+      if (saveBtn.classList.contains('saving')) return;
+      saveBtn.classList.add('saving');
+      saveBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="aa-spinner"><circle cx="7" cy="7" r="5.5" stroke="rgba(255,255,255,0.3)" stroke-width="2"/><path d="M7 1.5a5.5 5.5 0 0 1 5.5 5.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg> 저장 중...';
+      setTimeout(function() {
+        saveBtn.innerHTML = '<i data-lucide="check" style="width:14px;height:14px;stroke-width:2.5"></i> 저장 완료';
+        lucide.createIcons();
+        setTimeout(function() {
+          saveBtn.classList.remove('saving');
+          saveBtn.innerHTML = '<i data-lucide="save" style="width:14px;height:14px;stroke-width:2"></i> 보드 저장';
+          lucide.createIcons();
+        }, 2000);
+      }, 1000);
+    });
+
+    // New board modal
+    var boardOverlay = document.getElementById('board-modal-overlay');
+    var boardClose = document.getElementById('board-modal-close');
+    var boardCancel = document.getElementById('board-modal-cancel');
+    var boardSubmit = document.getElementById('board-modal-submit');
+    var boardNameInput = document.getElementById('board-name-input');
+    var boardTabs = document.querySelector('.ma-board-tabs');
+
+    function openBoardModal() {
+      boardOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      boardNameInput.value = '';
+      updateBoardSubmit();
+    }
+    function closeBoardModal() {
+      boardOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    function updateBoardSubmit() {
+      var valid = boardNameInput.value.trim() !== '';
+      boardSubmit.disabled = !valid;
+      boardSubmit.classList.toggle('disabled', !valid);
+    }
+
+    document.querySelector('.ma-board-tab-add').addEventListener('click', openBoardModal);
+    boardClose.addEventListener('click', closeBoardModal);
+    boardCancel.addEventListener('click', closeBoardModal);
+    boardOverlay.addEventListener('click', function(e) { if (e.target === boardOverlay) closeBoardModal(); });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && boardOverlay.classList.contains('active')) closeBoardModal();
+    });
+    boardNameInput.addEventListener('input', updateBoardSubmit);
+
+    boardSubmit.addEventListener('click', function() {
+      if (boardSubmit.disabled) return;
+      var name = boardNameInput.value.trim();
+      document.querySelectorAll('.ma-board-tab.active').forEach(function(t) { t.classList.remove('active'); });
+      var tab = document.createElement('div');
+      tab.className = 'ma-board-tab active';
+      tab.innerHTML = '<i data-lucide="layout-grid" style="width:14px;height:14px;stroke-width:2"></i><span>' + name + '</span><div class="ma-tab-actions"><button class="ma-tab-edit" aria-label="편집"><i data-lucide="pencil" style="width:12px;height:12px;stroke-width:2"></i></button><button class="ma-tab-delete" aria-label="삭제"><i data-lucide="x" style="width:12px;height:12px;stroke-width:2"></i></button></div>';
+      boardTabs.insertBefore(tab, document.querySelector('.ma-board-tab-add'));
+      document.querySelector('.ma-board-name').textContent = name;
+      document.querySelector('.ma-chart-count').textContent = '0개 차트';
+      chartGrid.innerHTML = '';
+      chartCount = 0;
+      echartsInstances = [];
+      updateBoard();
+      lucide.createIcons();
+      setupTabEdit(tab);
+      setupTabDelete(tab);
+      updateDeleteButtons();
+      closeBoardModal();
+
+      tab.addEventListener('click', function(e) {
+        if (e.target.closest('.ma-tab-delete') || e.target.closest('.ma-tab-edit')) return;
+        document.querySelectorAll('.ma-board-tab.active').forEach(function(t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        document.querySelector('.ma-board-name').textContent = name;
+      });
+    });
+
+    // Chart modal
+    var overlay = document.getElementById('chart-modal-overlay');
+    var btnClose = document.getElementById('chart-modal-close');
+    var btnCancel = document.getElementById('chart-modal-cancel');
+    var btnSubmit = document.getElementById('chart-modal-submit');
+    var inputTitle = document.getElementById('chart-title');
+    var selectX = document.getElementById('chart-x');
+    var selectY = document.getElementById('chart-y');
+
+    function openChartModal() {
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      inputTitle.value = '';
+      selectX.selectedIndex = 1;
+      selectY.selectedIndex = 1;
+      document.querySelectorAll('.ma-chart-type.selected').forEach(function(el) { el.classList.remove('selected'); });
+      document.querySelector('.ma-chart-type[data-type="bar"]').classList.add('selected');
+      updateChartSubmit();
+    }
+
+    function closeChartModal() {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function updateChartSubmit() {
+      var valid = inputTitle.value.trim() !== '';
+      btnSubmit.disabled = !valid;
+      btnSubmit.classList.toggle('disabled', !valid);
+    }
+
+    document.querySelector('.ma-btn-add-chart').addEventListener('click', openChartModal);
+    document.querySelector('.ma-empty-board').addEventListener('click', openChartModal);
+    btnClose.addEventListener('click', closeChartModal);
+    btnCancel.addEventListener('click', closeChartModal);
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) closeChartModal(); });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && overlay.classList.contains('active')) closeChartModal();
+    });
+
+    inputTitle.addEventListener('input', updateChartSubmit);
+
+    document.querySelectorAll('.ma-chart-type').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.ma-chart-type.selected').forEach(function(el) { el.classList.remove('selected'); });
+        btn.classList.add('selected');
+      });
+    });
+
+    // ── Chart data & ECharts ──────────────────────
+    var chartGrid = document.getElementById('ma-chart-grid');
+    var emptyBoard = document.getElementById('ma-empty-board');
+    var chartCountEl = document.querySelector('.ma-chart-count');
+    var chartCount = 0;
+    var echartsInstances = [];
+
+    // Sample data per X-axis column
+    var sampleData = {
+      '업체명':   { labels: ['Amazon', 'Google', 'Apple', 'Meta', 'Samsung', 'LG'], values: [48000, 36200, 31500, 24800, 19600, 12400] },
+      '품목':     { labels: ['A4용지', '골판지', '크라프트지', '아트지', '백상지', '신문용지'], values: [42000, 35000, 28000, 22000, 16000, 9000] },
+      '거래일자': { labels: ['1월', '2월', '3월', '4월', '5월', '6월'], values: [18000, 24000, 21000, 32000, 28000, 35000] },
+      '납기월':   { labels: ['1월', '2월', '3월', '4월', '5월', '6월'], values: [15000, 22000, 19000, 27000, 31000, 24000] },
+      '지역':     { labels: ['서울', '경기', '부산', '대구', '인천', '광주'], values: [45000, 38000, 22000, 18000, 15000, 11000] },
+      '담당자':   { labels: ['김철수', '이영희', '박민수', '정수연', '최동욱', '강지혜'], values: [32000, 28000, 24000, 20000, 17000, 13000] }
+    };
+
+    var chartColors = ['#4b69ff', '#FF6B6B', '#51CF66', '#FCC419', '#845EF7', '#22B8CF', '#FF922B'];
+
+    function getChartTypeIcon(type) {
+      var map = { bar: 'bar-chart-3', line: 'trending-up', scatter: 'git-branch', pie: 'pie-chart', table: 'table' };
+      return map[type] || 'bar-chart-3';
+    }
+
+    function getChartTypeLabel(type) {
+      var map = { bar: '막대 차트', line: '라인 차트', scatter: '스캐터 차트', pie: '파이 차트', table: '테이블 차트' };
+      return map[type] || '막대 차트';
+    }
+
+    function buildEChartsOption(type, xCol, yCol) {
+      var data = sampleData[xCol] || sampleData['업체명'];
+      var labels = data.labels;
+      var values = data.values;
+
+      if (type === 'bar') {
+        return {
+          tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+          grid: { left: 60, right: 20, top: 20, bottom: 40 },
+          xAxis: { type: 'category', data: labels, axisLabel: { fontSize: 11, color: '#94A3B8' }, axisLine: { lineStyle: { color: '#E2E8F0' } } },
+          yAxis: { type: 'value', name: yCol, nameTextStyle: { fontSize: 11, color: '#94A3B8' }, axisLabel: { fontSize: 11, color: '#94A3B8' }, splitLine: { lineStyle: { color: '#F1F5F9', type: 'dashed' } }, axisLine: { show: false } },
+          series: [{ type: 'bar', data: values, itemStyle: { color: '#4b69ff', borderRadius: [4, 4, 0, 0] }, barWidth: '45%' }]
+        };
+      }
+      if (type === 'line') {
+        return {
+          tooltip: { trigger: 'axis' },
+          grid: { left: 60, right: 20, top: 20, bottom: 40 },
+          xAxis: { type: 'category', data: labels, axisLabel: { fontSize: 11, color: '#94A3B8' }, axisLine: { lineStyle: { color: '#E2E8F0' } }, boundaryGap: false },
+          yAxis: { type: 'value', name: yCol, nameTextStyle: { fontSize: 11, color: '#94A3B8' }, axisLabel: { fontSize: 11, color: '#94A3B8' }, splitLine: { lineStyle: { color: '#F1F5F9', type: 'dashed' } }, axisLine: { show: false } },
+          series: [{ type: 'line', data: values, smooth: true, symbol: 'circle', symbolSize: 8, lineStyle: { width: 2.5, color: '#4b69ff' }, itemStyle: { color: '#4b69ff' }, areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: 'rgba(75,105,255,0.15)' }, { offset: 1, color: 'rgba(75,105,255,0)' }] } } }]
+        };
+      }
+      if (type === 'scatter') {
+        var scatterData = values.map(function(v, i) { return [i * 2 + Math.random() * 3, v + (Math.random() - 0.5) * 5000]; });
+        return {
+          tooltip: { trigger: 'item', formatter: function(p) { return p.value[0].toFixed(1) + ', ' + p.value[1].toFixed(0); } },
+          grid: { left: 60, right: 20, top: 20, bottom: 40 },
+          xAxis: { type: 'value', name: xCol, nameTextStyle: { fontSize: 11, color: '#94A3B8' }, axisLabel: { fontSize: 11, color: '#94A3B8' }, splitLine: { lineStyle: { color: '#F1F5F9', type: 'dashed' } } },
+          yAxis: { type: 'value', name: yCol, nameTextStyle: { fontSize: 11, color: '#94A3B8' }, axisLabel: { fontSize: 11, color: '#94A3B8' }, splitLine: { lineStyle: { color: '#F1F5F9', type: 'dashed' } }, axisLine: { show: false } },
+          series: [{ type: 'scatter', data: scatterData, symbolSize: 14, itemStyle: { color: '#4b69ff' } }]
+        };
+      }
+      if (type === 'pie') {
+        var pieData = labels.map(function(l, i) { return { name: l, value: values[i] }; });
+        return {
+          tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+          legend: { bottom: 0, textStyle: { fontSize: 11, color: '#94A3B8' } },
+          series: [{ type: 'pie', radius: ['35%', '65%'], center: ['50%', '45%'], data: pieData, label: { show: false }, emphasis: { label: { show: true, fontSize: 13, fontWeight: 'bold' } }, itemStyle: { borderRadius: 4, borderColor: '#fff', borderWidth: 2 } }],
+          color: chartColors
+        };
+      }
+      return null;
+    }
+
+    function buildTable(xCol, yCol) {
+      var data = sampleData[xCol] || sampleData['업체명'];
+      var html = '<table class="ma-table"><thead><tr><th>#</th><th>' + xCol + '</th><th>' + yCol + '</th></tr></thead><tbody>';
+      data.labels.forEach(function(l, i) {
+        html += '<tr><td>' + (i + 1) + '</td><td>' + l + '</td><td>' + data.values[i].toLocaleString() + '</td></tr>';
+      });
+      html += '</tbody></table>';
+      return html;
+    }
+
+    // ── Context menu ──────────────────────────────
+    function closeAllMenus() {
+      document.querySelectorAll('.ma-ctx-menu').forEach(function(m) { m.remove(); });
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.ma-ctx-menu') && !e.target.closest('.ma-card-gear')) {
+        closeAllMenus();
+      }
+      if (!e.target.closest('.ma-card-tag-wrap')) {
+        document.querySelectorAll('.ma-tag-dropdown.open').forEach(function(d) { d.classList.remove('open'); });
+      }
+    });
+
+    function showContextMenu(gearBtn, cardData) {
+      closeAllMenus();
+      var menu = document.createElement('div');
+      menu.className = 'ma-ctx-menu';
+      menu.innerHTML =
+        '<button class="ma-ctx-item" data-action="duplicate"><i data-lucide="copy" style="width:14px;height:14px;stroke-width:2"></i> 복제</button>' +
+        '<button class="ma-ctx-item" data-action="delete"><i data-lucide="trash-2" style="width:14px;height:14px;stroke-width:2"></i> 삭제</button>' +
+        '<div class="ma-ctx-divider"></div>' +
+        '<div class="ma-ctx-sub-wrap">' +
+          '<button class="ma-ctx-item ma-ctx-has-sub" data-action="viz"><i data-lucide="repeat" style="width:14px;height:14px;stroke-width:2"></i> 시각화 전환 <i data-lucide="chevron-right" style="width:12px;height:12px;stroke-width:2;margin-left:auto"></i></button>' +
+          '<div class="ma-ctx-submenu ma-ctx-submenu-viz">' +
+            '<button class="ma-ctx-item" data-viz="bar"><i data-lucide="bar-chart-3" style="width:14px;height:14px;stroke-width:2"></i> 막대 차트</button>' +
+            '<button class="ma-ctx-item" data-viz="line"><i data-lucide="trending-up" style="width:14px;height:14px;stroke-width:2"></i> 라인 차트</button>' +
+            '<button class="ma-ctx-item" data-viz="scatter"><i data-lucide="git-branch" style="width:14px;height:14px;stroke-width:2"></i> 스캐터 차트</button>' +
+            '<button class="ma-ctx-item" data-viz="pie"><i data-lucide="pie-chart" style="width:14px;height:14px;stroke-width:2"></i> 파이 차트</button>' +
+            '<button class="ma-ctx-item" data-viz="table"><i data-lucide="table" style="width:14px;height:14px;stroke-width:2"></i> 테이블 차트</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="ma-ctx-sub-wrap">' +
+          '<button class="ma-ctx-item ma-ctx-has-sub" data-action="drilldown"><i data-lucide="arrow-down-right" style="width:14px;height:14px;stroke-width:2"></i> 드릴 다운 <i data-lucide="chevron-right" style="width:12px;height:12px;stroke-width:2;margin-left:auto"></i></button>' +
+          '<div class="ma-ctx-submenu ma-ctx-submenu-drill">' +
+            '<button class="ma-ctx-item" data-drill="bar"><i data-lucide="bar-chart-3" style="width:14px;height:14px;stroke-width:2"></i> 막대 차트</button>' +
+            '<button class="ma-ctx-item" data-drill="line"><i data-lucide="trending-up" style="width:14px;height:14px;stroke-width:2"></i> 라인 차트</button>' +
+            '<button class="ma-ctx-item" data-drill="scatter"><i data-lucide="git-branch" style="width:14px;height:14px;stroke-width:2"></i> 스캐터 차트</button>' +
+            '<button class="ma-ctx-item" data-drill="pie"><i data-lucide="pie-chart" style="width:14px;height:14px;stroke-width:2"></i> 파이 차트</button>' +
+            '<button class="ma-ctx-item" data-drill="table"><i data-lucide="table" style="width:14px;height:14px;stroke-width:2"></i> 테이블 차트</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="ma-ctx-divider"></div>' +
+        '<button class="ma-ctx-item" data-action="rename"><i data-lucide="pencil" style="width:14px;height:14px;stroke-width:2"></i> 제목 변경</button>';
+
+      var rect = gearBtn.getBoundingClientRect();
+      menu.style.position = 'fixed';
+      menu.style.top = (rect.bottom + 4) + 'px';
+      menu.style.left = rect.left + 'px';
+      document.body.appendChild(menu);
+      lucide.createIcons();
+
+      // Adjust if overflows right
+      var menuRect = menu.getBoundingClientRect();
+      if (menuRect.right > window.innerWidth) {
+        menu.style.left = (window.innerWidth - menuRect.width - 8) + 'px';
+      }
+
+      // Duplicate
+      menu.querySelector('[data-action="duplicate"]').addEventListener('click', function() {
+        closeAllMenus();
+        addChart(cardData.title + ' (복제)', cardData.type, cardData.xCol, cardData.yCol);
+      });
+
+      // Delete
+      menu.querySelector('[data-action="delete"]').addEventListener('click', function() {
+        closeAllMenus();
+        var idx = echartsInstances.findIndex(function(inst) { return inst.id === cardData.id; });
+        if (idx > -1) {
+          if (echartsInstances[idx].chart) echartsInstances[idx].chart.dispose();
+          echartsInstances.splice(idx, 1);
+        }
+        cardData.card.remove();
+        chartCount--;
+        updateBoard();
+      });
+
+      // Visualization switch
+      menu.querySelectorAll('[data-viz]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          closeAllMenus();
+          switchChartType(cardData, btn.dataset.viz);
+        });
+      });
+
+      // Drill down
+      menu.querySelectorAll('[data-drill]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          closeAllMenus();
+          doDrillDown(cardData, btn.dataset.drill);
+        });
+      });
+
+      // Rename
+      menu.querySelector('[data-action="rename"]').addEventListener('click', function() {
+        closeAllMenus();
+        var titleEl = cardData.card.querySelector('.ma-card-title');
+        var currentTitle = titleEl.textContent;
+        var input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'ma-title-edit-input';
+        input.value = currentTitle;
+        titleEl.replaceWith(input);
+        input.focus();
+        input.select();
+
+        function saveTitle() {
+          var val = input.value.trim() || currentTitle;
+          cardData.title = val;
+          var span = document.createElement('span');
+          span.className = 'ma-card-title';
+          span.textContent = val;
+          input.replaceWith(span);
+        }
+        input.addEventListener('blur', saveTitle);
+        input.addEventListener('keydown', function(ev) { if (ev.key === 'Enter') input.blur(); });
+      });
+    }
+
+    function switchChartType(cardData, newType) {
+      cardData.type = newType;
+      var card = cardData.card;
+
+      // Update icon
+      var iconEl = card.querySelector('.ma-card-title-row i');
+      if (iconEl) {
+        iconEl.setAttribute('data-lucide', getChartTypeIcon(newType));
+        lucide.createIcons();
+      }
+
+      // Re-render chart
+      var chartContainer = card.querySelector('.ma-card-chart');
+      chartContainer.innerHTML = '';
+
+      var idx = echartsInstances.findIndex(function(inst) { return inst.id === cardData.id; });
+
+      if (idx > -1 && echartsInstances[idx].chart) { echartsInstances[idx].chart.dispose(); echartsInstances[idx].chart = null; }
+
+      if (newType === 'table') {
+        chartContainer.innerHTML = buildTable(cardData.xCol, cardData.yCol);
+      } else {
+        var div = document.createElement('div');
+        div.style.cssText = 'width:100%;height:100%;';
+        chartContainer.appendChild(div);
+        setTimeout(function() {
+          var instance = echarts.init(div);
+          instance.setOption(buildEChartsOption(newType, cardData.xCol, cardData.yCol));
+          if (idx > -1) { echartsInstances[idx].chart = instance; }
+        }, 0);
+      }
+    }
+
+    // Drill-down sub-columns
+    var drillColumns = {
+      '업체명': ['품목', '거래일자', '납기월'],
+      '품목': ['업체명', '지역', '담당자'],
+      '거래일자': ['업체명', '품목', '지역'],
+      '납기월': ['업체명', '품목', '담당자'],
+      '지역': ['업체명', '품목', '담당자'],
+      '담당자': ['업체명', '품목', '지역']
+    };
+
+    function doDrillDown(cardData, drillType) {
+      var subCols = drillColumns[cardData.xCol] || ['품목', '담당자', '지역'];
+      var newXCol = subCols[0];
+      var drillTitle = cardData.title + ' > ' + newXCol + '별';
+
+      addChart(drillTitle, drillType, newXCol, cardData.yCol);
+    }
+
+    // ── Add chart (ECharts) ──────────────────────
+    var chartIdCounter = 0;
+
+    function addChart(title, type, xCol, yCol) {
+      var icon = getChartTypeIcon(type);
+      var xTag = xCol || 'X축';
+      var yTag = yCol || 'Y축';
+      var chartId = 'chart-' + (++chartIdCounter);
+
+      var card = document.createElement('div');
+      card.className = 'ma-chart-card';
+      card.innerHTML =
+        '<div class="ma-card-header">' +
+          '<div class="ma-card-title-row">' +
+            '<i data-lucide="' + icon + '" style="width:16px;height:16px;stroke-width:2"></i>' +
+            '<span class="ma-card-title">' + title + '</span>' +
+          '</div>' +
+          '<button class="ma-card-gear" aria-label="설정"><i data-lucide="settings" style="width:14px;height:14px;stroke-width:2"></i></button>' +
+        '</div>' +
+        '<div class="ma-card-tags">' +
+          '<div class="ma-card-tag-wrap"><button class="ma-card-tag" data-axis="x">X: ' + xTag + '</button><div class="ma-tag-dropdown" data-axis="x"></div></div>' +
+          '<div class="ma-card-tag-wrap"><button class="ma-card-tag" data-axis="y">Y: ' + yTag + '</button><div class="ma-tag-dropdown" data-axis="y"></div></div>' +
+        '</div>' +
+        '<div class="ma-card-chart" id="' + chartId + '"></div>';
+
+      chartGrid.appendChild(card);
+      lucide.createIcons();
+
+      var cardData = { id: chartId, card: card, title: title, type: type, xCol: xTag, yCol: yTag, chart: null };
+
+      // Render chart
+      var container = document.getElementById(chartId);
+      if (type === 'table') {
+        container.innerHTML = buildTable(xTag, yTag);
+      } else {
+        var chartDiv = document.createElement('div');
+        chartDiv.style.cssText = 'width:100%;height:100%;';
+        container.appendChild(chartDiv);
+        setTimeout(function() {
+          var instance = echarts.init(chartDiv);
+          instance.setOption(buildEChartsOption(type, xTag, yTag));
+          cardData.chart = instance;
+        }, 0);
+      }
+
+      echartsInstances.push(cardData);
+
+      // Gear button
+      card.querySelector('.ma-card-gear').addEventListener('click', function(e) {
+        e.stopPropagation();
+        showContextMenu(this, cardData);
+      });
+
+      // Tag dropdowns
+      var xColumns = ['업체명', '품목', '카테고리', '납기월', '지역', '담당자'];
+      var yColumns = ['구매금액', '수량', '단가', '납기일수'];
+
+      card.querySelectorAll('.ma-card-tag').forEach(function(tagBtn) {
+        tagBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var wrap = tagBtn.parentElement;
+          var dropdown = wrap.querySelector('.ma-tag-dropdown');
+          var isOpen = dropdown.classList.contains('open');
+
+          // Close all other dropdowns
+          document.querySelectorAll('.ma-tag-dropdown.open').forEach(function(d) { d.classList.remove('open'); });
+
+          if (isOpen) return;
+
+          var axis = tagBtn.dataset.axis;
+          var columns = axis === 'x' ? xColumns : yColumns;
+          var current = axis === 'x' ? cardData.xCol : cardData.yCol;
+
+          dropdown.innerHTML = columns.map(function(col) {
+            return '<button class="ma-tag-option' + (col === current ? ' active' : '') + '">' + col + '</button>';
+          }).join('');
+          dropdown.classList.add('open');
+
+          dropdown.querySelectorAll('.ma-tag-option').forEach(function(opt) {
+            opt.addEventListener('click', function(ev) {
+              ev.stopPropagation();
+              var selected = opt.textContent;
+              if (axis === 'x') {
+                cardData.xCol = selected;
+                tagBtn.textContent = 'X: ' + selected;
+              } else {
+                cardData.yCol = selected;
+                tagBtn.textContent = 'Y: ' + selected;
+              }
+              dropdown.classList.remove('open');
+              // Re-render chart
+              switchChartType(cardData, cardData.type);
+            });
+          });
+        });
+      });
+
+      chartCount++;
+      updateBoard();
+    }
+
+    function updateBoard() {
+      chartCountEl.textContent = chartCount + '개 차트';
+      if (chartCount > 0) {
+        emptyBoard.style.display = 'none';
+        chartGrid.style.display = '';
+      } else {
+        emptyBoard.style.display = '';
+        chartGrid.style.display = 'none';
+      }
+    }
+
+    // Resize all echarts on window resize
+    window.addEventListener('resize', function() {
+      echartsInstances.forEach(function(inst) {
+        if (inst.chart) inst.chart.resize();
+      });
+    });
+
+    // Submit
+    btnSubmit.addEventListener('click', function() {
+      if (btnSubmit.disabled) return;
+      var selectedType = document.querySelector('.ma-chart-type.selected').dataset.type;
+      addChart(inputTitle.value.trim(), selectedType, selectX.value, selectY.value);
+      closeChartModal();
+    });
+  })();
+  </script>
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <script>
+  (function() {
+    var btn = document.getElementById('mobile-menu-btn');
+    var sidebar = document.querySelector('.sidebar');
+    var overlay = document.getElementById('sidebar-overlay');
+    if (!btn || !sidebar || !overlay) return;
+    btn.addEventListener('click', function() {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('active');
+    });
+    overlay.addEventListener('click', function() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    });
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agora BI - 자동 데이터 분석</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="auto-analysis.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- ── Sidebar ─────────────────────────────── -->
+  <aside class="sidebar">
+
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <i data-lucide="bar-chart-2" style="width:16px;height:16px;stroke-width:2.5"></i>
+      </div>
+      <div class="logo-text">
+        <span class="logo-title">Agora BI</span>
+        <span class="logo-subtitle">AI Analytics Platform</span>
+      </div>
+      <div class="sidebar-toggle">
+        <i data-lucide="panel-left-close" style="width:14px;height:14px;stroke-width:2"></i>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+
+      <div class="nav-wrap">
+        <a class="nav-link" href="dashboard.html">
+          <div class="nav-icon">
+            <i data-lucide="house" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">홈</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Workspace: selected A -->
+      <div class="nav-wrap">
+        <div class="ws-dropdown" id="ws-dropdown">
+          <button class="nav-link ws-toggle" id="ws-toggle">
+            <div class="nav-icon">
+              <i data-lucide="database" style="width:14px;height:14px;stroke-width:2"></i>
+            </div>
+            <div class="nav-text">
+              <span class="nav-main">워크스페이스 A</span>
+              <span class="nav-sub">제지 구매 데이터</span>
+            </div>
+            <i data-lucide="chevron-down" class="nav-chevron ws-chevron" id="ws-chevron" style="width:12px;height:12px;stroke-width:2"></i>
+          </button>
+          <div class="ws-list" id="ws-list">
+            <button class="ws-item selected" data-ws="A">
+              <span class="ws-item-name">워크스페이스 A</span>
+              <span class="ws-item-desc">제지 구매 데이터</span>
+            </button>
+            <button class="ws-item" data-ws="B">
+              <span class="ws-item-name">워크스페이스 B</span>
+              <span class="ws-item-desc">원자재 구매 데이터</span>
+            </button>
+            <button class="ws-item" data-ws="C">
+              <span class="ws-item-name">워크스페이스 C</span>
+              <span class="ws-item-desc">포장재 구매 데이터</span>
+            </button>
+            <button class="ws-item ws-add">
+              <i data-lucide="plus" style="width:12px;height:12px;stroke-width:2"></i><span class="ws-add-label">새 워크스페이스 추가</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <hr class="nav-divider">
+
+      <div class="nav-wrap">
+        <a class="nav-link active" href="auto-analysis.html">
+          <div class="nav-icon">
+            <i data-lucide="zap" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">자동 데이터 분석</span>
+            <span class="nav-sub">AI Auto Analysis</span>
+          </div>
+
+        </a>
+      </div>
+
+      <div class="nav-wrap">
+        <a class="nav-link" href="manual-analysis.html">
+          <div class="nav-icon">
+            <i data-lucide="layout-dashboard" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">수동 데이터 분석</span>
+            <span class="nav-sub">Manual Board</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="nav-wrap">
+        <a class="nav-link" href="predictive.html">
+          <div class="nav-icon">
+            <i data-lucide="trending-up" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">예측 분석</span>
+            <span class="nav-sub">Predictive Analytics</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="nav-wrap">
+        <a class="nav-link" href="#">
+          <div class="nav-icon">
+            <i data-lucide="bot" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">AI 에이전트 &amp; 리포트</span>
+            <span class="nav-sub">Agent &amp; Report</span>
+          </div>
+        </a>
+      </div>
+
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-row">
+        <div class="user-avatar"><span>관</span></div>
+        <div class="user-info">
+          <span class="user-name">관리자</span>
+          <span class="user-email">admin@agora-bi.co.kr</span>
+        </div>
+        <button class="user-btn" aria-label="로그아웃">
+          <i data-lucide="log-out" style="width:12px;height:12px;stroke-width:2"></i>
+        </button>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ── Main ────────────────────────────────── -->
+  <div class="main-wrapper">
+
+    <!-- Header -->
+    <header class="header">
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="메뉴">
+        <i data-lucide="menu" style="width:18px;height:18px;stroke-width:2"></i>
+      </button>
+      <div class="header-spacer"></div>
+      <button class="header-btn" aria-label="알림">
+        <i data-lucide="bell" style="width:14px;height:14px;stroke-width:2"></i>
+        <span class="notif-dot"></span>
+      </button>
+      <button class="header-btn" aria-label="설정">
+        <i data-lucide="settings" style="width:14px;height:14px;stroke-width:2"></i>
+      </button>
+    </header>
+
+    <!-- Content -->
+    <main class="content aa-content">
+
+      <!-- ── Page Header ────────────────────── -->
+      <div class="aa-page-header">
+        <div class="aa-header-left">
+          <div class="aa-title-row">
+            <h1 class="aa-title">자동 데이터 분석</h1>
+            <span class="aa-ws-badge">워크스페이스 A</span>
+          </div>
+          <p class="aa-desc">핵심 데이터를 선택하면 AI가 자동으로 분석 차트와 인사이트를 생성합니다</p>
+        </div>
+        <div class="aa-header-actions">
+          <button class="aa-action-btn">
+            <i data-lucide="share-2" style="width:14px;height:14px;stroke-width:2"></i>
+            공유
+          </button>
+          <button class="aa-action-btn">
+            <i data-lucide="pencil" style="width:14px;height:14px;stroke-width:2"></i>
+            편집
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Key Data Selection ─────────────── -->
+      <div class="aa-keydata-card">
+        <div class="aa-keydata-header">
+          <div class="aa-keydata-icon">
+            <i data-lucide="check-circle" style="width:16px;height:16px;stroke-width:2"></i>
+          </div>
+          <span class="aa-keydata-title">핵심 데이터(Key Data) 선택</span>
+          <span class="aa-keydata-hint">분석할 데이터 항목을 선택하세요</span>
+        </div>
+        <div class="aa-keydata-row">
+          <button class="aa-kd-btn">
+            <div class="aa-kd-text">
+              <span class="aa-kd-name">구매 금액</span>
+              <span class="aa-kd-desc">총 구매 금액 및 추이</span>
+            </div>
+          </button>
+          <button class="aa-kd-btn">
+            <div class="aa-kd-text">
+              <span class="aa-kd-name">공급업체</span>
+              <span class="aa-kd-desc">업체별 분포 및 리스크</span>
+            </div>
+          </button>
+          <button class="aa-kd-btn">
+            <div class="aa-kd-text">
+              <span class="aa-kd-name">단가 변동</span>
+              <span class="aa-kd-desc">품목별 단가 변동 분석</span>
+            </div>
+          </button>
+          <button class="aa-kd-btn">
+            <div class="aa-kd-text">
+              <span class="aa-kd-name">리드타임</span>
+              <span class="aa-kd-desc">납기 및 리드타임 분석</span>
+            </div>
+          </button>
+          <button class="aa-kd-btn">
+            <div class="aa-kd-text">
+              <span class="aa-kd-name">자재 그룹</span>
+              <span class="aa-kd-desc">자재 그룹별 지출 비중</span>
+            </div>
+          </button>
+          <button class="aa-run-btn">
+            <i data-lucide="sparkles" style="width:14px;height:14px;stroke-width:2"></i>
+            AI 분석 실행
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Empty State (before analysis) ──── -->
+      <div class="empty-state" id="aa-empty-state">
+        <div class="empty-state-icon">
+          <i data-lucide="sparkles" style="width:28px;height:28px;stroke-width:1.5"></i>
+        </div>
+        <h3 class="empty-state-title">핵심 데이터를 선택하고 AI 분석을 실행하세요</h3>
+        <p class="empty-state-desc">분석 항목을 선택한 후 'AI 분석 실행' 버튼을 클릭하세요</p>
+      </div>
+
+      <!-- ── Loading State ──────────────────── -->
+      <div class="empty-state" id="aa-loading-state" style="display:none">
+        <div class="empty-state-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" class="aa-spinner">
+            <circle cx="14" cy="14" r="11" stroke="var(--color-primary-light)" stroke-width="3"/>
+            <path d="M14 3a11 11 0 0 1 11 11" stroke="var(--color-primary)" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="empty-state-title">AI가 데이터를 분석하고 있습니다...</h3>
+        <p class="empty-state-desc">잠시만 기다려 주세요</p>
+      </div>
+
+      <!-- ── Analysis Result ────────────────── -->
+      <div class="aa-result-row hidden" id="aa-results">
+        <div class="aa-analysis-card">
+          <div class="aa-analysis-tabs">
+            <div class="aa-tab-icon">
+              <i data-lucide="file-text" style="width:16px;height:16px;stroke-width:2"></i>
+            </div>
+            <span class="aa-tab-label active">Contextual Overview</span>
+            <span class="aa-tab-badge">AI 생성</span>
+          </div>
+          <h2 class="aa-analysis-title">구매 금액 분석</h2>
+          <p class="aa-analysis-text">
+            2024년 총 구매 금액은 487억 원으로 전년 대비 12.3% 증가했습니다. 4분기에 집중된 구매 패턴이 관찰되며, 특히 10~12월 구매 비중이 연간의 38%를 차지합니다. 상위 3개 공급업체 의존도가 67%로 리스크 분산이 필요한 시점입니다.
+          </p>
+        </div>
+        <div class="aa-stats-grid">
+          <div class="aa-stat-box">
+            <span class="aa-stat-label">총 구매 금액</span>
+            <span class="aa-stat-value">487억 원</span>
+            <span class="aa-stat-change positive">+12.3%</span>
+          </div>
+          <div class="aa-stat-box">
+            <span class="aa-stat-label">월 평균 금액</span>
+            <span class="aa-stat-value">40.6억 원</span>
+            <span class="aa-stat-change positive">+8.1%</span>
+          </div>
+          <div class="aa-stat-box">
+            <span class="aa-stat-label">최고 월 금액</span>
+            <span class="aa-stat-value">56.9억 원</span>
+            <span class="aa-stat-change positive">12월</span>
+          </div>
+          <div class="aa-stat-box">
+            <span class="aa-stat-label">공급업체 수</span>
+            <span class="aa-stat-value">7개사</span>
+            <span class="aa-stat-change positive">전년 동일</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Charts Row ─────────────────────── -->
+      <div class="aa-charts-row hidden" id="aa-charts">
+
+        <!-- Chart 1: 월별 구매 금액 추이 -->
+        <div class="aa-chart-card">
+          <div class="aa-chart-header">
+            <span class="aa-chart-title">월별 구매 금액 추이</span>
+            <span class="aa-impact-badge high">높은 영향</span>
+          </div>
+          <div class="aa-chart-area">
+            <svg viewBox="0 0 334 180" class="aa-chart-svg">
+              <line x1="30" y1="10" x2="30" y2="160" stroke="#E2E8F0" stroke-width="1"/>
+              <line x1="30" y1="160" x2="330" y2="160" stroke="#E2E8F0" stroke-width="1"/>
+              <line x1="30" y1="122" x2="330" y2="122" stroke="#F1F5F9" stroke-width="1" stroke-dasharray="4"/>
+              <line x1="30" y1="85" x2="330" y2="85" stroke="#F1F5F9" stroke-width="1" stroke-dasharray="4"/>
+              <line x1="30" y1="47" x2="330" y2="47" stroke="#F1F5F9" stroke-width="1" stroke-dasharray="4"/>
+              <line x1="30" y1="10" x2="330" y2="10" stroke="#F1F5F9" stroke-width="1" stroke-dasharray="4"/>
+              <text x="5" y="163" class="aa-axis-label">0</text>
+              <text x="5" y="125" class="aa-axis-label">1500</text>
+              <text x="5" y="88" class="aa-axis-label">3000</text>
+              <text x="5" y="50" class="aa-axis-label">4500</text>
+              <text x="5" y="14" class="aa-axis-label">6000</text>
+              <polyline fill="none" stroke="#12926B" stroke-width="2" points="55,130 80,125 105,118 130,122 155,115 180,110 205,108 230,105 255,95 280,70 305,55 325,50"/>
+              <polygon fill="url(#grad1)" opacity="0.15" points="55,130 80,125 105,118 130,122 155,115 180,110 205,108 230,105 255,95 280,70 305,55 325,50 325,160 55,160"/>
+              <defs><linearGradient id="grad1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#12926B"/><stop offset="100%" stop-color="#12926B" stop-opacity="0"/></linearGradient></defs>
+              <text x="55" y="175" class="aa-axis-label" text-anchor="middle">Jan</text>
+              <text x="80" y="175" class="aa-axis-label" text-anchor="middle">Feb</text>
+              <text x="105" y="175" class="aa-axis-label" text-anchor="middle">Mar</text>
+              <text x="130" y="175" class="aa-axis-label" text-anchor="middle">Apr</text>
+              <text x="155" y="175" class="aa-axis-label" text-anchor="middle">May</text>
+              <text x="180" y="175" class="aa-axis-label" text-anchor="middle">Jun</text>
+              <text x="205" y="175" class="aa-axis-label" text-anchor="middle">Jul</text>
+              <text x="230" y="175" class="aa-axis-label" text-anchor="middle">Aug</text>
+              <text x="255" y="175" class="aa-axis-label" text-anchor="middle">Sep</text>
+              <text x="280" y="175" class="aa-axis-label" text-anchor="middle">Oct</text>
+              <text x="305" y="175" class="aa-axis-label" text-anchor="middle">Nov</text>
+              <text x="325" y="175" class="aa-axis-label" text-anchor="middle">Dec</text>
+            </svg>
+          </div>
+          <div class="aa-chart-insight">
+            <div class="aa-insight-icon">
+              <i data-lucide="lightbulb" style="width:14px;height:14px;stroke-width:2"></i>
+            </div>
+            <p class="aa-insight-text">4분기(10~12월) 구매 집중 현상이 뚜렷합니다. 연간 구매의 38%가 4분기에 발생하며, 이는 연말 예산 소진 패턴으로 분석됩니다. 분기별 구매 평준화를 통해 협상력을 높일 수 있습니다.</p>
+          </div>
+        </div>
+
+        <!-- Chart 2: 공급업체별 구매 비중 -->
+        <div class="aa-chart-card">
+          <div class="aa-chart-header">
+            <span class="aa-chart-title">공급업체별 구매 비중</span>
+            <span class="aa-impact-badge high">높은 영향</span>
+          </div>
+          <div class="aa-chart-area aa-donut-area">
+            <svg viewBox="0 0 180 180" class="aa-donut-svg">
+              <circle cx="90" cy="90" r="65" fill="none" stroke="#E2E8F0" stroke-width="30"/>
+              <circle cx="90" cy="90" r="65" fill="none" stroke="#12926B" stroke-width="30" stroke-dasharray="102.1 306.3" stroke-dashoffset="0" transform="rotate(-90 90 90)"/>
+              <circle cx="90" cy="90" r="65" fill="none" stroke="#283752" stroke-width="30" stroke-dasharray="81.7 326.7" stroke-dashoffset="-102.1" transform="rotate(-90 90 90)"/>
+              <circle cx="90" cy="90" r="65" fill="none" stroke="#D97706" stroke-width="30" stroke-dasharray="61.3 347.1" stroke-dashoffset="-183.8" transform="rotate(-90 90 90)"/>
+              <circle cx="90" cy="90" r="65" fill="none" stroke="#3B82F6" stroke-width="30" stroke-dasharray="40.8 367.6" stroke-dashoffset="-245.1" transform="rotate(-90 90 90)"/>
+              <circle cx="90" cy="90" r="65" fill="none" stroke="#94A3B8" stroke-width="30" stroke-dasharray="122.5 285.9" stroke-dashoffset="-285.9" transform="rotate(-90 90 90)"/>
+            </svg>
+            <div class="aa-donut-legend">
+              <span class="aa-legend-item"><span class="aa-legend-dot" style="background:#94A3B8"></span>기타</span>
+              <span class="aa-legend-item"><span class="aa-legend-dot" style="background:#12926B"></span>깨끗한나라</span>
+              <span class="aa-legend-item"><span class="aa-legend-dot" style="background:#283752"></span>무림페이퍼</span>
+              <span class="aa-legend-item"><span class="aa-legend-dot" style="background:#3B82F6"></span>신흥제지</span>
+              <span class="aa-legend-item"><span class="aa-legend-dot" style="background:#D97706"></span>아세아제지</span>
+              <span class="aa-legend-item"><span class="aa-legend-dot" style="background:#12926B"></span>한솔제지</span>
+            </div>
+          </div>
+          <div class="aa-chart-insight">
+            <div class="aa-insight-icon">
+              <i data-lucide="lightbulb" style="width:14px;height:14px;stroke-width:2"></i>
+            </div>
+            <p class="aa-insight-text">상위 3개사(한솔, 무림, 아세아)가 전체의 61.3%를 차지합니다. 공급 집중도가 높아 특정 업체 이슈 발생 시 공급망 전체에 영향을 미칠 수 있습니다. 신규 공급업체 발굴이 시급합니다.</p>
+          </div>
+        </div>
+
+        <!-- Chart 3: 주요 품목 단가 변동 -->
+        <div class="aa-chart-card">
+          <div class="aa-chart-header">
+            <span class="aa-chart-title">주요 품목 단가 변동</span>
+            <span class="aa-impact-badge medium">중간 영향</span>
+          </div>
+          <div class="aa-chart-area">
+            <svg viewBox="0 0 334 180" class="aa-chart-svg">
+              <line x1="30" y1="10" x2="30" y2="160" stroke="#E2E8F0" stroke-width="1"/>
+              <line x1="30" y1="160" x2="330" y2="160" stroke="#E2E8F0" stroke-width="1"/>
+              <line x1="30" y1="122" x2="330" y2="122" stroke="#F1F5F9" stroke-width="1" stroke-dasharray="4"/>
+              <line x1="30" y1="85" x2="330" y2="85" stroke="#F1F5F9" stroke-width="1" stroke-dasharray="4"/>
+              <line x1="30" y1="47" x2="330" y2="47" stroke="#F1F5F9" stroke-width="1" stroke-dasharray="4"/>
+              <line x1="30" y1="10" x2="330" y2="10" stroke="#F1F5F9" stroke-width="1" stroke-dasharray="4"/>
+              <text x="5" y="163" class="aa-axis-label">0</text>
+              <text x="5" y="125" class="aa-axis-label">1500</text>
+              <text x="5" y="88" class="aa-axis-label">3000</text>
+              <text x="5" y="50" class="aa-axis-label">4500</text>
+              <text x="5" y="14" class="aa-axis-label">6000</text>
+              <polyline fill="none" stroke="#12926B" stroke-width="2" points="55,50 105,48 155,47 205,45 255,42 305,38"/>
+              <polyline fill="none" stroke="#D97706" stroke-width="2" points="55,55 105,53 155,50 205,48 255,46 305,42"/>
+              <polyline fill="none" stroke="#3B82F6" stroke-width="2" stroke-dasharray="6,3" points="55,85 105,83 155,82 205,80 255,78 305,75"/>
+              <text x="55" y="175" class="aa-axis-label" text-anchor="middle">Jan</text>
+              <text x="105" y="175" class="aa-axis-label" text-anchor="middle">Mar</text>
+              <text x="155" y="175" class="aa-axis-label" text-anchor="middle">May</text>
+              <text x="205" y="175" class="aa-axis-label" text-anchor="middle">Jul</text>
+              <text x="255" y="175" class="aa-axis-label" text-anchor="middle">Sep</text>
+              <text x="305" y="175" class="aa-axis-label" text-anchor="middle">Nov</text>
+            </svg>
+          </div>
+          <div class="aa-chart-insight">
+            <div class="aa-insight-icon">
+              <i data-lucide="lightbulb" style="width:14px;height:14px;stroke-width:2"></i>
+            </div>
+            <p class="aa-insight-text">A4 인쇄용지 단가가 연초 대비 21.6% 상승하며 가장 큰 폭의 변동을 보였습니다. 신문용지와 골판지원지도 각각 9.5%, 6.8% 상승했습니다. 장기 계약을 통한 단가 고정이 비용 절감에 효과적입니다.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <script>lucide.createIcons();</script>
+
+  <script>
+  (function() {
+    // Key Data tab selection (single select)
+    document.querySelectorAll('.aa-kd-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.aa-kd-btn.selected').forEach(function(el) {
+          el.classList.remove('selected');
+        });
+        btn.classList.add('selected');
+      });
+    });
+
+    // AI 분석 실행 button
+    var runBtn = document.querySelector('.aa-run-btn');
+    runBtn.addEventListener('click', function() {
+      if (runBtn.classList.contains('loading')) return;
+
+      // Hide results, show loading
+      runBtn.classList.add('loading');
+      runBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="aa-spinner"><circle cx="7" cy="7" r="5.5" stroke="rgba(255,255,255,0.3)" stroke-width="2"/><path d="M7 1.5a5.5 5.5 0 0 1 5.5 5.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg> 분석 중...';
+      document.getElementById('aa-empty-state').style.display = 'none';
+      document.getElementById('aa-results').classList.add('hidden');
+      document.getElementById('aa-charts').classList.add('hidden');
+      document.getElementById('aa-loading-state').style.display = '';
+
+      // After 2s show results
+      setTimeout(function() {
+        document.getElementById('aa-loading-state').style.display = 'none';
+        document.getElementById('aa-results').classList.remove('hidden');
+        document.getElementById('aa-charts').classList.remove('hidden');
+        runBtn.classList.remove('loading');
+        runBtn.innerHTML = '<i data-lucide="sparkles" style="width:14px;height:14px;stroke-width:2"></i> AI 분석 실행';
+        lucide.createIcons();
+      }, 2000);
+    });
+
+    // Workspace dropdown toggle
+    var toggle = document.getElementById('ws-toggle');
+    var dropdown = document.getElementById('ws-dropdown');
+    var chevron = document.getElementById('ws-chevron');
+
+    toggle.addEventListener('click', function() {
+      var isOpen = dropdown.classList.toggle('open');
+      chevron.setAttribute('data-lucide', isOpen ? 'chevron-up' : 'chevron-down');
+      lucide.createIcons();
+    });
+  })();
+  </script>
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <script>
+  (function() {
+    var btn = document.getElementById('mobile-menu-btn');
+    var sidebar = document.querySelector('.sidebar');
+    var overlay = document.getElementById('sidebar-overlay');
+    if (!btn || !sidebar || !overlay) return;
+    btn.addEventListener('click', function() {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('active');
+    });
+    overlay.addEventListener('click', function() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    });
+  })();
+  </script>
+</body>
+</html>

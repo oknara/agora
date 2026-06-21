@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agora BI - 대시보드</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- ── Sidebar ─────────────────────────────── -->
+  <aside class="sidebar">
+
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <i data-lucide="bar-chart-2" style="width:16px;height:16px;stroke-width:2.5"></i>
+      </div>
+      <div class="logo-text">
+        <span class="logo-title">Agora BI</span>
+        <span class="logo-subtitle">AI Analytics Platform</span>
+      </div>
+      <div class="sidebar-toggle">
+        <i data-lucide="panel-left-close" style="width:14px;height:14px;stroke-width:2"></i>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+
+      <div class="nav-wrap">
+        <a class="nav-link active" href="dashboard.html">
+          <div class="nav-icon">
+            <i data-lucide="house" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">홈</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Workspace dropdown -->
+      <div class="nav-wrap">
+        <div class="ws-dropdown" id="ws-dropdown">
+          <button class="nav-link ws-toggle" id="ws-toggle">
+            <div class="nav-icon">
+              <i data-lucide="database" style="width:14px;height:14px;stroke-width:2"></i>
+            </div>
+            <div class="nav-text">
+              <span class="nav-main">워크스페이스</span>
+            </div>
+            <i data-lucide="chevron-down" class="nav-chevron ws-chevron" id="ws-chevron" style="width:12px;height:12px;stroke-width:2"></i>
+          </button>
+          <div class="ws-list" id="ws-list">
+            <button class="ws-item" data-ws="A">
+              <span class="ws-item-name">워크스페이스 A</span>
+              <span class="ws-item-desc">제지 구매 데이터</span>
+            </button>
+            <button class="ws-item" data-ws="B">
+              <span class="ws-item-name">워크스페이스 B</span>
+              <span class="ws-item-desc">원자재 구매 데이터</span>
+            </button>
+            <button class="ws-item" data-ws="C">
+              <span class="ws-item-name">워크스페이스 C</span>
+              <span class="ws-item-desc">포장재 구매 데이터</span>
+            </button>
+            <button class="ws-item ws-add" id="ws-add-btn">
+              <i data-lucide="plus" style="width:12px;height:12px;stroke-width:2"></i><span class="ws-add-label">새 워크스페이스 추가</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <hr class="nav-divider">
+
+      <div class="nav-wrap nav-dependent" data-disabled="true">
+        <a class="nav-link disabled">
+          <div class="nav-icon">
+            <i data-lucide="zap" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">자동 데이터 분석</span>
+            <span class="nav-sub">AI Auto Analysis</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="nav-wrap nav-dependent" data-disabled="true">
+        <a class="nav-link disabled">
+          <div class="nav-icon">
+            <i data-lucide="layout-dashboard" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">수동 데이터 분석</span>
+            <span class="nav-sub">Manual Board</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="nav-wrap nav-dependent" data-disabled="true">
+        <a class="nav-link disabled">
+          <div class="nav-icon">
+            <i data-lucide="trending-up" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">예측 분석</span>
+            <span class="nav-sub">Predictive Analytics</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="nav-wrap nav-dependent" data-disabled="true">
+        <a class="nav-link disabled">
+          <div class="nav-icon">
+            <i data-lucide="bot" style="width:14px;height:14px;stroke-width:2"></i>
+          </div>
+          <div class="nav-text">
+            <span class="nav-main">AI 에이전트 &amp; 리포트</span>
+            <span class="nav-sub">Agent &amp; Report</span>
+          </div>
+        </a>
+      </div>
+
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-row">
+        <div class="user-avatar"><span>관</span></div>
+        <div class="user-info">
+          <span class="user-name">관리자</span>
+          <span class="user-email">admin@agora-bi.co.kr</span>
+        </div>
+        <button class="user-btn" aria-label="로그아웃">
+          <i data-lucide="log-out" style="width:12px;height:12px;stroke-width:2"></i>
+        </button>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ── Main ────────────────────────────────── -->
+  <div class="main-wrapper">
+
+    <!-- Header -->
+    <header class="header">
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="메뉴">
+        <i data-lucide="menu" style="width:18px;height:18px;stroke-width:2"></i>
+      </button>
+      <div class="header-spacer"></div>
+
+      <button class="header-btn" aria-label="알림">
+        <i data-lucide="bell" style="width:14px;height:14px;stroke-width:2"></i>
+        <span class="notif-dot"></span>
+      </button>
+
+      <button class="header-btn" aria-label="설정">
+        <i data-lucide="settings" style="width:14px;height:14px;stroke-width:2"></i>
+      </button>
+
+    </header>
+
+    <!-- Content -->
+    <main class="content">
+
+      <!-- ── Hero Card ──────────────────────── -->
+      <div class="hero-card">
+
+        <div class="hero-left">
+          <!-- Badge row: icon + Agora BI label -->
+          <div class="hero-badge-row">
+            <div class="hero-badge-icon">
+              <i data-lucide="bar-chart-2" style="width:16px;height:16px;stroke-width:2.5"></i>
+            </div>
+            <span class="hero-badge-text">Agora BI</span>
+          </div>
+
+          <!-- Title & description -->
+          <div class="hero-body">
+            <h1 class="hero-title">안녕하세요, 관리자님</h1>
+            <p class="hero-desc">
+              데이터를 업로드하고 AI 기반 분석을 시작하세요.<br>
+              자동 인사이트 생성부터 예측 분석까지, 전문 지식 없이도 손쉽게 활용할 수 있습니다.
+            </p>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="hero-actions">
+            <button class="btn-primary" id="btn-add-data">
+              <i data-lucide="upload" style="width:14px;height:14px;stroke-width:2.5"></i>
+              데이터 추가하기
+            </button>
+            <button class="btn-outline btn-guide">
+              <i data-lucide="book-open" style="width:14px;height:14px;stroke-width:2"></i>
+              사용 가이드
+            </button>
+          </div>
+        </div>
+
+
+      </div>
+
+      <!-- ── Workspace Section ───────────────── -->
+      <div>
+
+        <div class="section-header">
+          <div class="section-title">
+            연결된 워크스페이스
+            <span class="section-count">3</span>
+          </div>
+          <button class="btn-new-workspace" id="btn-new-workspace">
+            <i data-lucide="plus" style="width:14px;height:14px;stroke-width:2.5"></i>
+            새 워크스페이스
+          </button>
+        </div>
+
+        <div class="workspace-grid">
+
+          <!-- Card A -->
+          <div class="workspace-card">
+            <div class="card-top">
+              <div class="card-meta">
+                <div class="card-name">워크스페이스 A</div>
+                <div class="card-desc">제지 구매 데이터</div>
+              </div>
+              <div class="status-pill status-done">
+                <span class="status-dot"></span>
+                분석 완료
+              </div>
+            </div>
+
+            <div class="card-stats">
+              <div class="card-stat-box">
+                <span class="card-stat-label">데이터 행 수</span>
+                <span class="card-stat-value">142,830</span>
+              </div>
+              <div class="card-stat-box">
+                <span class="card-stat-label">컬럼 수</span>
+                <span class="card-stat-value">24개</span>
+              </div>
+            </div>
+
+            <div class="card-tags">
+              <span class="tag green">구매</span>
+              <span class="tag green">제지</span>
+              <span class="tag green">2024</span>
+            </div>
+
+            <div class="card-footer">
+              <span class="card-updated">업데이트: 2026.04.24</span>
+              <button class="btn-start green">
+                분석 시작
+                <i data-lucide="chevron-right" style="width:12px;height:12px;stroke-width:2.5"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Card B -->
+          <div class="workspace-card">
+            <div class="card-top">
+              <div class="card-meta">
+                <div class="card-name">워크스페이스 B</div>
+                <div class="card-desc">원자재 구매 데이터</div>
+              </div>
+              <div class="status-pill status-pending">
+                <span class="status-dot"></span>
+                대기 중
+              </div>
+            </div>
+
+            <div class="card-stats">
+              <div class="card-stat-box">
+                <span class="card-stat-label">데이터 행 수</span>
+                <span class="card-stat-value">87,420</span>
+              </div>
+              <div class="card-stat-box">
+                <span class="card-stat-label">컬럼 수</span>
+                <span class="card-stat-value">18개</span>
+              </div>
+            </div>
+
+            <div class="card-tags">
+              <span class="tag dark">원자재</span>
+              <span class="tag dark">구매</span>
+              <span class="tag dark">2023</span>
+            </div>
+
+            <div class="card-footer">
+              <span class="card-updated">업데이트: 2026.04.20</span>
+              <button class="btn-start dark">
+                분석 시작
+                <i data-lucide="chevron-right" style="width:12px;height:12px;stroke-width:2.5"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Card C -->
+          <div class="workspace-card">
+            <div class="card-top">
+              <div class="card-meta">
+                <div class="card-name">워크스페이스 C</div>
+                <div class="card-desc">포장재 구매 데이터</div>
+              </div>
+              <div class="status-pill status-process">
+                <span class="status-dot"></span>
+                처리 중
+              </div>
+            </div>
+
+            <div class="card-stats">
+              <div class="card-stat-box">
+                <span class="card-stat-label">데이터 행 수</span>
+                <span class="card-stat-value">53,100</span>
+              </div>
+              <div class="card-stat-box">
+                <span class="card-stat-label">컬럼 수</span>
+                <span class="card-stat-value">21개</span>
+              </div>
+            </div>
+
+            <div class="card-tags">
+              <span class="tag orange">포장재</span>
+              <span class="tag orange">물류</span>
+              <span class="tag orange">2024</span>
+            </div>
+
+            <div class="card-footer">
+              <span class="card-updated">업데이트: 2026.04.18</span>
+              <button class="btn-start orange">
+                분석 시작
+                <i data-lucide="chevron-right" style="width:12px;height:12px;stroke-width:2.5"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ── Modal: 데이터 추가하기 ──────────────── -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="modal-add-data">
+      <button class="modal-close" id="modal-close" aria-label="닫기">
+        <i data-lucide="x" style="width:16px;height:16px;stroke-width:2"></i>
+      </button>
+
+      <div class="modal-header">
+        <div class="modal-header-icon">
+          <i data-lucide="upload" style="width:16px;height:16px;stroke-width:2"></i>
+        </div>
+        <div class="modal-header-text">
+          <h3 class="modal-title">데이터 추가하기</h3>
+          <p class="modal-subtitle">CSV 파일을 업로드하여 새 워크스페이스를 생성합니다</p>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-field">
+          <label class="modal-label">워크스페이스 이름 <span class="required">*</span></label>
+          <input type="text" class="modal-input" id="input-ws-name" placeholder="예: 제지 구매 데이터 2024">
+        </div>
+
+        <div class="modal-field">
+          <label class="modal-label">설명 (선택)</label>
+          <input type="text" class="modal-input" id="input-ws-desc" placeholder="데이터에 대한 간단한 설명">
+        </div>
+
+        <div class="modal-upload-area" id="upload-area">
+          <input type="file" id="file-input" accept=".csv" hidden>
+          <div class="upload-icon">
+            <i data-lucide="upload-cloud" style="width:20px;height:20px;stroke-width:2"></i>
+          </div>
+          <div class="upload-text">
+            <span class="upload-main" id="upload-main-text">CSV 파일을 드래그하거나 클릭하여 업로드</span>
+            <span class="upload-hint" id="upload-hint-text">.csv 형식만 지원 · 최대 100MB</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="modal-btn-cancel" id="modal-cancel">취소</button>
+        <button class="modal-btn-submit disabled" id="modal-submit" disabled>
+          <i data-lucide="upload" style="width:14px;height:14px;stroke-width:2"></i>
+          업로드 시작
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>lucide.createIcons();</script>
+
+  <script>
+  (function() {
+    const overlay = document.getElementById('modal-overlay');
+    const modal = document.getElementById('modal-add-data');
+    const btnAddData = document.getElementById('btn-add-data');
+    const btnNewWs = document.getElementById('btn-new-workspace');
+    const btnClose = document.getElementById('modal-close');
+    const btnCancel = document.getElementById('modal-cancel');
+    const btnSubmit = document.getElementById('modal-submit');
+    const inputName = document.getElementById('input-ws-name');
+    const inputDesc = document.getElementById('input-ws-desc');
+    const uploadArea = document.getElementById('upload-area');
+    const fileInput = document.getElementById('file-input');
+    const uploadMainText = document.getElementById('upload-main-text');
+    const uploadHintText = document.getElementById('upload-hint-text');
+
+    let selectedFile = null;
+
+    function openModal() {
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      inputName.value = '';
+      inputDesc.value = '';
+      selectedFile = null;
+      uploadMainText.textContent = 'CSV 파일을 드래그하거나 클릭하여 업로드';
+      uploadHintText.textContent = '.csv 형식만 지원 · 최대 100MB';
+      uploadArea.classList.remove('has-file');
+      fileInput.value = '';
+      updateSubmitState();
+    }
+
+    function closeModal() {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function updateSubmitState() {
+      const valid = inputName.value.trim() !== '' && selectedFile !== null;
+      btnSubmit.disabled = !valid;
+      btnSubmit.classList.toggle('disabled', !valid);
+    }
+
+    btnAddData.addEventListener('click', openModal);
+    btnNewWs.addEventListener('click', openModal);
+    btnClose.addEventListener('click', closeModal);
+    btnCancel.addEventListener('click', closeModal);
+
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closeModal();
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal();
+    });
+
+    inputName.addEventListener('input', updateSubmitState);
+
+    uploadArea.addEventListener('click', function() {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener('change', function() {
+      if (fileInput.files.length > 0) {
+        selectedFile = fileInput.files[0];
+        uploadMainText.textContent = selectedFile.name;
+        uploadHintText.textContent = (selectedFile.size / 1024).toFixed(1) + ' KB';
+        uploadArea.classList.add('has-file');
+        updateSubmitState();
+      }
+    });
+
+    uploadArea.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      uploadArea.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', function() {
+      uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', function(e) {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if (file && file.name.endsWith('.csv')) {
+        selectedFile = file;
+        fileInput.files = e.dataTransfer.files;
+        uploadMainText.textContent = file.name;
+        uploadHintText.textContent = (file.size / 1024).toFixed(1) + ' KB';
+        uploadArea.classList.add('has-file');
+        updateSubmitState();
+      }
+    });
+
+    btnSubmit.addEventListener('click', function() {
+      if (btnSubmit.disabled) return;
+      alert('워크스페이스 "' + inputName.value.trim() + '" 생성이 요청되었습니다.');
+      closeModal();
+    });
+  })();
+
+  // ── Workspace Dropdown ──
+  (function() {
+    const toggle = document.getElementById('ws-toggle');
+    const list = document.getElementById('ws-list');
+    const chevron = document.getElementById('ws-chevron');
+    const dropdown = document.getElementById('ws-dropdown');
+    const dependentItems = document.querySelectorAll('.nav-dependent');
+    const wsAddBtn = document.getElementById('ws-add-btn');
+    let selectedWs = null;
+
+    toggle.addEventListener('click', function() {
+      const isOpen = dropdown.classList.toggle('open');
+      // Swap chevron icon
+      chevron.setAttribute('data-lucide', isOpen ? 'chevron-up' : 'chevron-down');
+      lucide.createIcons();
+    });
+
+    document.querySelectorAll('.ws-item:not(.ws-add)').forEach(function(item) {
+      item.addEventListener('click', function() {
+        // Remove previous selection
+        document.querySelectorAll('.ws-item.selected').forEach(function(el) {
+          el.classList.remove('selected');
+        });
+        item.classList.add('selected');
+        selectedWs = item.dataset.ws;
+
+        // Close dropdown
+        dropdown.classList.remove('open');
+        chevron.setAttribute('data-lucide', 'chevron-down');
+        lucide.createIcons();
+
+        // Enable dependent nav items
+        dependentItems.forEach(function(dep) {
+          dep.dataset.disabled = 'false';
+          dep.querySelector('.nav-link').classList.remove('disabled');
+        });
+
+        // Set navigation links for dependent menu items
+        var links = [
+          { el: dependentItems[0], href: 'auto-analysis.html' },
+          { el: dependentItems[1], href: 'manual-analysis.html' },
+          { el: dependentItems[2], href: 'predictive.html' }
+        ];
+        links.forEach(function(l) {
+          var a = l.el.querySelector('.nav-link');
+          a.href = l.href;
+          a.style.pointerEvents = 'auto';
+        });
+      });
+    });
+
+    // 분석 시작 buttons navigate to auto-analysis page
+    document.querySelectorAll('.btn-start').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        window.location.href = 'auto-analysis.html';
+      });
+    });
+
+    // "새 워크스페이스 추가" opens the modal
+    wsAddBtn.addEventListener('click', function() {
+      document.getElementById('modal-overlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  })();
+  </script>
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <script>
+  (function() {
+    var btn = document.getElementById('mobile-menu-btn');
+    var sidebar = document.querySelector('.sidebar');
+    var overlay = document.getElementById('sidebar-overlay');
+    if (!btn || !sidebar || !overlay) return;
+    btn.addEventListener('click', function() {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('active');
+    });
+    overlay.addEventListener('click', function() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    });
+  })();
+  </script>
+</body>
+</html>
