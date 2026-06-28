@@ -37,7 +37,7 @@ body {
 .logo-icon {
   width: 32px;
   height: 32px;
-  background: var(--color-dark);
+  background: var(--color-primary);
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
@@ -87,7 +87,7 @@ body {
 .nav-link {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   padding: 10px;
   border-radius: var(--radius-md);
   cursor: pointer;
@@ -99,8 +99,8 @@ body {
 .nav-link.active { background: var(--color-primary-light); }
 
 .nav-icon {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -128,7 +128,7 @@ body {
   display: block;
   font-size: 10px;
   font-weight: 400;
-  color: var(--color-text-disabled);
+  color: var(--color-text-muted);
 }
 
 .nav-chevron { color: var(--color-text-muted); flex-shrink: 0; }
@@ -390,7 +390,7 @@ body {
 .hero-badge-icon {
   width: 36px;
   height: 36px;
-  background: var(--color-dark);
+  background: var(--color-primary);
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;

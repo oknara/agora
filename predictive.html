@@ -31,7 +31,7 @@
       <div class="nav-wrap">
         <a class="nav-link" href="dashboard.html">
           <div class="nav-icon">
-            <i data-lucide="house" style="width:14px;height:14px;stroke-width:2"></i>
+            <i data-lucide="house" style="width:16px;height:16px;stroke-width:2"></i>
           </div>
           <div class="nav-text">
             <span class="nav-main">홈</span>
@@ -42,7 +42,7 @@
         <div class="ws-dropdown" id="ws-dropdown">
           <button class="nav-link ws-toggle" id="ws-toggle">
             <div class="nav-icon">
-              <i data-lucide="database" style="width:14px;height:14px;stroke-width:2"></i>
+              <i data-lucide="database" style="width:16px;height:16px;stroke-width:2"></i>
             </div>
             <div class="nav-text">
               <span class="nav-main">워크스페이스 A</span>
@@ -74,7 +74,7 @@
       <div class="nav-wrap">
         <a class="nav-link" href="auto-analysis.html">
           <div class="nav-icon">
-            <i data-lucide="zap" style="width:14px;height:14px;stroke-width:2"></i>
+            <i data-lucide="sparkles" style="width:16px;height:16px;stroke-width:2"></i>
           </div>
           <div class="nav-text">
             <span class="nav-main">자동 데이터 분석</span>
@@ -85,7 +85,7 @@
       <div class="nav-wrap">
         <a class="nav-link" href="manual-analysis.html">
           <div class="nav-icon">
-            <i data-lucide="layout-dashboard" style="width:14px;height:14px;stroke-width:2"></i>
+            <i data-lucide="layout-dashboard" style="width:16px;height:16px;stroke-width:2"></i>
           </div>
           <div class="nav-text">
             <span class="nav-main">수동 데이터 분석</span>
@@ -96,7 +96,7 @@
       <div class="nav-wrap">
         <a class="nav-link active" href="predictive.html">
           <div class="nav-icon">
-            <i data-lucide="trending-up" style="width:14px;height:14px;stroke-width:2"></i>
+            <i data-lucide="trending-up" style="width:16px;height:16px;stroke-width:2"></i>
           </div>
           <div class="nav-text">
             <span class="nav-main">예측 분석</span>
@@ -108,7 +108,7 @@
       <div class="nav-wrap">
         <a class="nav-link" href="#">
           <div class="nav-icon">
-            <i data-lucide="bot" style="width:14px;height:14px;stroke-width:2"></i>
+            <i data-lucide="bot" style="width:16px;height:16px;stroke-width:2"></i>
           </div>
           <div class="nav-text">
             <span class="nav-main">AI 에이전트 &amp; 리포트</span>
@@ -404,6 +404,25 @@
       lucide.createIcons();
     });
 
+    document.querySelectorAll('.ws-item:not(.ws-add)').forEach(function(item) {
+      item.addEventListener('click', function() {
+        document.querySelectorAll('.ws-item.selected').forEach(function(el) { el.classList.remove('selected'); });
+        item.classList.add('selected');
+
+        var wsName = item.querySelector('.ws-item-name').textContent;
+        var wsDesc = item.querySelector('.ws-item-desc').textContent;
+        toggle.querySelector('.nav-main').textContent = wsName;
+        toggle.querySelector('.nav-sub').textContent = wsDesc;
+
+        var badge = document.querySelector('.aa-ws-badge');
+        if (badge) badge.textContent = wsName;
+
+        dropdown.classList.remove('open');
+        chevron.setAttribute('data-lucide', 'chevron-down');
+        lucide.createIcons();
+      });
+    });
+
     // Data filter tabs
     document.querySelectorAll('.pv-filter-item').forEach(function(btn) {
       btn.addEventListener('click', function() {
@@ -414,9 +433,14 @@
     });
 
     // Range sliders
-    document.getElementById('range-demand').addEventListener('input', function() { document.getElementById('val-demand').textContent = this.value + '%'; });
-    document.getElementById('range-material').addEventListener('input', function() { document.getElementById('val-material').textContent = this.value + '%'; });
-    document.getElementById('range-supply').addEventListener('input', function() { document.getElementById('val-supply').textContent = this.value + '%'; });
+    function updateRangeBg(el) {
+      var pct = (el.value - el.min) / (el.max - el.min) * 100;
+      el.style.background = 'linear-gradient(to right, var(--color-primary) ' + pct + '%, var(--color-border) ' + pct + '%)';
+    }
+    document.querySelectorAll('.pv-range').forEach(function(el) { updateRangeBg(el); });
+    document.getElementById('range-demand').addEventListener('input', function() { document.getElementById('val-demand').textContent = this.value + '%'; updateRangeBg(this); });
+    document.getElementById('range-material').addEventListener('input', function() { document.getElementById('val-material').textContent = this.value + '%'; updateRangeBg(this); });
+    document.getElementById('range-supply').addEventListener('input', function() { document.getElementById('val-supply').textContent = this.value + '%'; updateRangeBg(this); });
 
     // Forecast toggle
     document.getElementById('pv-forecast-toggle').addEventListener('change', function() {
