@@ -223,20 +223,20 @@
                 <div class="card-name">워크스페이스 A</div>
                 <div class="card-desc">제지 구매 데이터</div>
               </div>
-              <div class="status-pill status-done">
+              <div class="status-pill status-process">
                 <span class="status-dot"></span>
-                분석 완료
+                분석 중
               </div>
             </div>
 
             <div class="card-stats">
               <div class="card-stat-box">
-                <span class="card-stat-label">데이터 행 수</span>
-                <span class="card-stat-value">142,830</span>
+                <span class="card-stat-label">파일</span>
+                <span class="card-stat-value">3개</span>
               </div>
               <div class="card-stat-box">
-                <span class="card-stat-label">컬럼 수</span>
-                <span class="card-stat-value">24개</span>
+                <span class="card-stat-label">총 데이터 행 수</span>
+                <span class="card-stat-value">142,830</span>
               </div>
             </div>
 
@@ -247,7 +247,10 @@
             </div>
 
             <div class="card-footer">
-              <span class="card-updated">업데이트: 2026.04.24</span>
+              <button class="btn-add-file">
+                <i data-lucide="plus" style="width:12px;height:12px;stroke-width:2.5"></i>
+                파일 추가
+              </button>
               <button class="btn-start green">
                 분석 시작
                 <i data-lucide="chevron-right" style="width:12px;height:12px;stroke-width:2.5"></i>
@@ -262,20 +265,20 @@
                 <div class="card-name">워크스페이스 B</div>
                 <div class="card-desc">원자재 구매 데이터</div>
               </div>
-              <div class="status-pill status-pending">
+              <div class="status-pill status-process">
                 <span class="status-dot"></span>
-                대기 중
+                분석 중
               </div>
             </div>
 
             <div class="card-stats">
               <div class="card-stat-box">
-                <span class="card-stat-label">데이터 행 수</span>
-                <span class="card-stat-value">87,420</span>
+                <span class="card-stat-label">파일</span>
+                <span class="card-stat-value">2개</span>
               </div>
               <div class="card-stat-box">
-                <span class="card-stat-label">컬럼 수</span>
-                <span class="card-stat-value">18개</span>
+                <span class="card-stat-label">총 데이터 행 수</span>
+                <span class="card-stat-value">87,420</span>
               </div>
             </div>
 
@@ -286,7 +289,10 @@
             </div>
 
             <div class="card-footer">
-              <span class="card-updated">업데이트: 2026.04.20</span>
+              <button class="btn-add-file">
+                <i data-lucide="plus" style="width:12px;height:12px;stroke-width:2.5"></i>
+                파일 추가
+              </button>
               <button class="btn-start dark">
                 분석 시작
                 <i data-lucide="chevron-right" style="width:12px;height:12px;stroke-width:2.5"></i>
@@ -303,19 +309,24 @@
               </div>
               <div class="status-pill status-process">
                 <span class="status-dot"></span>
-                처리 중
+                분석 중
               </div>
             </div>
 
             <div class="card-stats">
               <div class="card-stat-box">
-                <span class="card-stat-label">데이터 행 수</span>
-                <span class="card-stat-value">53,100</span>
+                <span class="card-stat-label">파일</span>
+                <span class="card-stat-value">4개</span>
               </div>
               <div class="card-stat-box">
-                <span class="card-stat-label">컬럼 수</span>
-                <span class="card-stat-value">21개</span>
+                <span class="card-stat-label">총 데이터 행 수</span>
+                <span class="card-stat-value">53,100</span>
               </div>
+            </div>
+
+            <div class="card-warning">
+              <i data-lucide="alert-triangle" style="width:14px;height:14px;stroke-width:2"></i>
+              일부 파일의 컬럼이 달라요
             </div>
 
             <div class="card-tags">
@@ -325,7 +336,10 @@
             </div>
 
             <div class="card-footer">
-              <span class="card-updated">업데이트: 2026.04.18</span>
+              <button class="btn-add-file">
+                <i data-lucide="plus" style="width:12px;height:12px;stroke-width:2.5"></i>
+                파일 추가
+              </button>
               <button class="btn-start orange">
                 분석 시작
                 <i data-lucide="chevron-right" style="width:12px;height:12px;stroke-width:2.5"></i>
@@ -367,15 +381,20 @@
           <input type="text" class="modal-input" id="input-ws-desc" placeholder="데이터에 대한 간단한 설명">
         </div>
 
-        <div class="modal-upload-area" id="upload-area">
-          <input type="file" id="file-input" accept=".csv" hidden>
-          <div class="upload-icon">
-            <i data-lucide="upload-cloud" style="width:20px;height:20px;stroke-width:2"></i>
+        <div class="modal-field">
+          <label class="modal-label">파일 추가하기</label>
+          <div class="modal-upload-area" id="upload-area">
+            <input type="file" id="file-input" accept=".csv" multiple hidden>
+            <div class="upload-icon">
+              <i data-lucide="upload-cloud" style="width:20px;height:20px;stroke-width:2"></i>
+            </div>
+            <div class="upload-text">
+              <span class="upload-main" id="upload-main-text">CSV 파일을 드래그하거나 클릭하여 업로드</span>
+              <span class="upload-hint" id="upload-hint-text">.csv 형식만 지원 · 최대 100MB · 여러 개 선택 가능</span>
+            </div>
           </div>
-          <div class="upload-text">
-            <span class="upload-main" id="upload-main-text">CSV 파일을 드래그하거나 클릭하여 업로드</span>
-            <span class="upload-hint" id="upload-hint-text">.csv 형식만 지원 · 최대 100MB</span>
-          </div>
+
+          <div class="file-list" id="file-list"></div>
         </div>
       </div>
 
@@ -404,21 +423,19 @@
     const inputDesc = document.getElementById('input-ws-desc');
     const uploadArea = document.getElementById('upload-area');
     const fileInput = document.getElementById('file-input');
-    const uploadMainText = document.getElementById('upload-main-text');
-    const uploadHintText = document.getElementById('upload-hint-text');
+    const fileListEl = document.getElementById('file-list');
 
-    let selectedFile = null;
+    let selectedFiles = [];
+    let fileIdSeq = 0;
 
     function openModal() {
       overlay.classList.add('active');
       document.body.style.overflow = 'hidden';
       inputName.value = '';
       inputDesc.value = '';
-      selectedFile = null;
-      uploadMainText.textContent = 'CSV 파일을 드래그하거나 클릭하여 업로드';
-      uploadHintText.textContent = '.csv 형식만 지원 · 최대 100MB';
-      uploadArea.classList.remove('has-file');
+      selectedFiles = [];
       fileInput.value = '';
+      renderFileList();
       updateSubmitState();
     }
 
@@ -428,9 +445,75 @@
     }
 
     function updateSubmitState() {
-      const valid = inputName.value.trim() !== '' && selectedFile !== null;
+      const valid = inputName.value.trim() !== '' && selectedFiles.length > 0;
       btnSubmit.disabled = !valid;
       btnSubmit.classList.toggle('disabled', !valid);
+    }
+
+    function formatSize(bytes) {
+      if (bytes >= 1024 * 1024) return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+      return (bytes / 1024).toFixed(1) + ' KB';
+    }
+
+    function addFiles(fileList) {
+      Array.from(fileList).forEach(function(file) {
+        if (!file.name.toLowerCase().endsWith('.csv')) return;
+        // 중복(이름+크기) 방지
+        if (selectedFiles.some(function(f) { return f.file.name === file.name && f.file.size === file.size; })) return;
+        const entry = { id: ++fileIdSeq, file: file, uploading: true };
+        selectedFiles.push(entry);
+        // 업로드되는 느낌의 스피너를 잠시 노출
+        setTimeout(function() {
+          entry.uploading = false;
+          renderFileList();
+        }, 1500);
+      });
+      renderFileList();
+      updateSubmitState();
+    }
+
+    function removeFile(id) {
+      selectedFiles = selectedFiles.filter(function(f) { return f.id !== id; });
+      renderFileList();
+      updateSubmitState();
+    }
+
+    function renderFileList() {
+      fileListEl.innerHTML = '';
+      selectedFiles.forEach(function(entry) {
+        const row = document.createElement('div');
+        row.className = 'file-item';
+
+        const info = document.createElement('div');
+        info.className = 'file-item-info';
+        const name = document.createElement('span');
+        name.className = 'file-item-name';
+        name.textContent = entry.file.name;
+        const size = document.createElement('span');
+        size.className = 'file-item-size';
+        size.textContent = formatSize(entry.file.size);
+        info.appendChild(name);
+        info.appendChild(size);
+
+        const actions = document.createElement('div');
+        actions.className = 'file-item-actions';
+        if (entry.uploading) {
+          const spinner = document.createElement('span');
+          spinner.className = 'file-spinner';
+          actions.appendChild(spinner);
+        }
+        const del = document.createElement('button');
+        del.className = 'file-item-delete';
+        del.type = 'button';
+        del.innerHTML = '<i data-lucide="trash-2" style="width:16px;height:16px;stroke-width:2"></i>';
+        del.addEventListener('click', function() { removeFile(entry.id); });
+        actions.appendChild(del);
+
+        row.appendChild(info);
+        row.appendChild(actions);
+        fileListEl.appendChild(row);
+      });
+      lucide.createIcons();
     }
 
     btnAddData.addEventListener('click', openModal);
@@ -454,11 +537,8 @@
 
     fileInput.addEventListener('change', function() {
       if (fileInput.files.length > 0) {
-        selectedFile = fileInput.files[0];
-        uploadMainText.textContent = selectedFile.name;
-        uploadHintText.textContent = (selectedFile.size / 1024).toFixed(1) + ' KB';
-        uploadArea.classList.add('has-file');
-        updateSubmitState();
+        addFiles(fileInput.files);
+        fileInput.value = '';
       }
     });
 
@@ -474,14 +554,8 @@
     uploadArea.addEventListener('drop', function(e) {
       e.preventDefault();
       uploadArea.classList.remove('dragover');
-      const file = e.dataTransfer.files[0];
-      if (file && file.name.endsWith('.csv')) {
-        selectedFile = file;
-        fileInput.files = e.dataTransfer.files;
-        uploadMainText.textContent = file.name;
-        uploadHintText.textContent = (file.size / 1024).toFixed(1) + ' KB';
-        uploadArea.classList.add('has-file');
-        updateSubmitState();
+      if (e.dataTransfer.files.length > 0) {
+        addFiles(e.dataTransfer.files);
       }
     });
 
